@@ -116,6 +116,9 @@ export default function LoginPage() {
           </Link>
           <CardTitle>Welcome back</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
+          <p className="mt-2 text-xs text-muted-foreground bg-muted px-3 py-1.5 rounded-md">
+            Demo mode: Enter any email/password to sign in
+          </p>
         </CardHeader>
 
         <Tabs defaultValue="password" className="w-full">

@@ -36,12 +36,13 @@ export default function SignupPage() {
 
     try {
       await signUp(email, password, companyName);
-      setSignupComplete(true);
       toast({
         title: "Account created!",
-        description: "Please check your email to verify your account.",
+        description: "Welcome to ATESTO!",
         variant: "success",
       });
+      // In mock mode, go directly to dashboard
+      router.push("/dashboard");
     } catch (error) {
       toast({
         title: "Signup failed",
@@ -49,7 +50,6 @@ export default function SignupPage() {
           error instanceof Error ? error.message : "Please try again",
         variant: "destructive",
       });
-    } finally {
       setIsLoading(false);
     }
   };
@@ -90,6 +90,9 @@ export default function SignupPage() {
           <CardDescription>
             10 document extractions free every month
           </CardDescription>
+          <p className="mt-2 text-xs text-muted-foreground bg-muted px-3 py-1.5 rounded-md">
+            Demo mode: No email verification required
+          </p>
         </CardHeader>
 
         <form onSubmit={handleSubmit}>

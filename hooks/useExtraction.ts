@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { createClient } from "@/lib/supabase";
+import { useState, useCallback } from "react";
 import type { ExtractedData, Extraction } from "@/lib/types";
 import { generateId } from "@/lib/utils";
+import { mockDb, isMockMode } from "@/lib/mock-db";
+import { getMockExtractionData } from "@/lib/gemini";
 
 export function useExtraction() {
   const [isExtracting, setIsExtracting] = useState(false);
@@ -11,13 +12,20 @@ export function useExtraction() {
     null
   );
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClient();
 
-  const extractFromFile = async (file: File): Promise<ExtractedData | null> => {
+  const extractFromFile = useCallback(async (file: File): Promise<ExtractedData | null> => {
     setIsExtracting(true);
     setError(null);
 
     try {
+      // In mock mode, just return mock data without calling API
+      if (isMockMode()) {
+        await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate processing
+        const data = getMockExtractionData();
+        setExtractedData(data);
+        return data;
+      }
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -41,16 +49,23 @@ export function useExtraction() {
     } finally {
       setIsExtracting(false);
     }
-  };
+  }, []);
 
-  const saveExtraction = async (
+  const saveExtraction = useCallback(async (
     companyId: string,
     fileName: string,
     file: File,
     data: ExtractedData
   ): Promise<Extraction | null> => {
     try {
-      // Upload file to storage
+      if (isMockMode()) {
+        return await mockDb.saveExtraction(companyId, fileName, file, data);
+      }
+
+      // Real Supabase storage
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+
       const fileExt = fileName.split(".").pop();
       const filePath = `extractions/${companyId}/${generateId()}.${fileExt}`;
 
@@ -62,7 +77,6 @@ export function useExtraction() {
         throw uploadError;
       }
 
-      // Save extraction record
       const { data: extraction, error: insertError } = await supabase
         .from("extractions")
         .insert({
@@ -89,14 +103,22 @@ export function useExtraction() {
       setError(message);
       return null;
     }
-  };
+  }, []);
 
-  const updateExtraction = async (
+  const updateExtraction = useCallback(async (
     extractionId: string,
     data: Partial<ExtractedData>,
     status?: "pending" | "reviewed" | "confirmed"
   ): Promise<boolean> => {
     try {
+      if (isMockMode()) {
+        return await mockDb.updateExtraction(extractionId, data, status);
+      }
+
+      // Real Supabase update
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+
       const updateData: Record<string, unknown> = {
         extracted_data: data,
         updated_at: new Date().toISOString(),
@@ -137,10 +159,18 @@ export function useExtraction() {
       setError(message);
       return false;
     }
-  };
+  }, []);
 
-  const getExtractions = async (companyId: string): Promise<Extraction[]> => {
+  const getExtractions = useCallback(async (companyId: string): Promise<Extraction[]> => {
     try {
+      if (isMockMode()) {
+        return await mockDb.getExtractions(companyId);
+      }
+
+      // Real Supabase query
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+
       const { data, error } = await supabase
         .from("extractions")
         .select("*")
@@ -158,12 +188,20 @@ export function useExtraction() {
       setError(message);
       return [];
     }
-  };
+  }, []);
 
-  const getExtraction = async (
+  const getExtraction = useCallback(async (
     extractionId: string
   ): Promise<Extraction | null> => {
     try {
+      if (isMockMode()) {
+        return await mockDb.getExtraction(extractionId);
+      }
+
+      // Real Supabase query
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+
       const { data, error } = await supabase
         .from("extractions")
         .select("*")
@@ -174,7 +212,6 @@ export function useExtraction() {
         throw error;
       }
 
-      // Get file URL
       if (data?.file_path) {
         const { data: urlData } = supabase.storage
           .from("documents")
@@ -189,10 +226,18 @@ export function useExtraction() {
       setError(message);
       return null;
     }
-  };
+  }, []);
 
-  const deleteExtraction = async (extractionId: string): Promise<boolean> => {
+  const deleteExtraction = useCallback(async (extractionId: string): Promise<boolean> => {
     try {
+      if (isMockMode()) {
+        return await mockDb.deleteExtraction(extractionId);
+      }
+
+      // Real Supabase delete
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+
       const { error } = await supabase
         .from("extractions")
         .delete()
@@ -208,12 +253,12 @@ export function useExtraction() {
       setError(message);
       return false;
     }
-  };
+  }, []);
 
-  const clearData = () => {
+  const clearData = useCallback(() => {
     setExtractedData(null);
     setError(null);
-  };
+  }, []);
 
   return {
     isExtracting,
