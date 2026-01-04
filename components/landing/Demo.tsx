@@ -2,16 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ConfidenceIndicator } from "@/components/dashboard/ConfidenceIndicator";
-import { FileText, ArrowRight } from "lucide-react";
+import { FileText, ArrowRight, Sparkles, Check } from "lucide-react";
 
 const mockExtractionResult = {
   document_type: "Certificate",
@@ -31,6 +22,21 @@ const mockExtractionResult = {
   overall_confidence: 85,
 };
 
+function ConfidenceBadge({ confidence }: { confidence: number }) {
+  const color =
+    confidence >= 90
+      ? "bg-green-500/20 text-green-400 border-green-500/30"
+      : confidence >= 70
+      ? "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
+      : "bg-red-500/20 text-red-400 border-red-500/30";
+
+  return (
+    <span className={`px-2 py-0.5 rounded text-xs font-medium border ${color}`}>
+      {confidence}%
+    </span>
+  );
+}
+
 export function Demo() {
   const [showResult, setShowResult] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -43,175 +49,217 @@ export function Demo() {
     }, 2000);
   };
 
+  const handleReset = () => {
+    setShowResult(false);
+    setIsProcessing(false);
+  };
+
   return (
-    <section id="demo" className="bg-secondary/30 py-20 lg:py-32">
+    <section id="demo" className="py-24 lg:py-32 bg-gradient-to-b from-transparent via-secondary/10 to-transparent">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            See it in action
+        {/* Section header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary mb-4">
+            <Sparkles className="h-3.5 w-3.5" />
+            Interactive Demo
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            See extraction
+            <span className="text-gradient-primary"> in action</span>
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Watch how ATESTO extracts structured data from a supplier
-            certificate.
+          <p className="mt-4 text-lg text-muted-foreground">
+            Watch how ATESTO extracts structured data from a supplier certificate in seconds.
           </p>
         </div>
 
-        <div className="mt-16 grid gap-8 lg:grid-cols-2">
+        {/* Demo area */}
+        <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Document Preview */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
-                Sample Certificate
-              </CardTitle>
-              <CardDescription>
-                A typical supplier certificate with material composition and
-                certifications
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="rounded-lg border-2 border-dashed bg-muted/50 p-8 text-center">
-                <div className="mx-auto max-w-sm space-y-4 text-left">
-                  <div className="border-b pb-4">
-                    <p className="font-bold">CERTIFICATE OF COMPLIANCE</p>
-                    <p className="text-sm text-muted-foreground">
+          <div className="rounded-2xl border border-border/50 bg-card/50 overflow-hidden">
+            <div className="flex items-center gap-3 px-6 py-4 border-b border-border/50 bg-secondary/30">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                <FileText className="h-4 w-4 text-primary" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">Sample Certificate</h3>
+                <p className="text-xs text-muted-foreground">Supplier compliance document</p>
+              </div>
+            </div>
+
+            <div className="p-6">
+              {/* Document mockup */}
+              <div className="rounded-xl border border-border/30 bg-secondary/20 p-6">
+                <div className="space-y-4 text-sm">
+                  <div className="border-b border-border/30 pb-4">
+                    <p className="text-lg font-bold text-foreground">CERTIFICATE OF COMPLIANCE</p>
+                    <p className="text-muted-foreground mt-1">
                       EcoMaterials GmbH - Germany
                     </p>
                   </div>
-                  <div className="space-y-2 text-sm">
-                    <p>
-                      <strong>Material Composition:</strong>
-                    </p>
-                    <p>65% Recycled Polyester, 30% Organic Cotton, 5% Elastane</p>
-                    <p className="mt-4">
-                      <strong>Certifications:</strong>
-                    </p>
-                    <p>GOTS Certified: GOTS-2024-78456</p>
-                    <p>OEKO-TEX Standard 100: OT-24-89012</p>
+
+                  <div className={`transition-all duration-500 ${isProcessing ? "animate-pulse" : ""}`}>
+                    <p className="font-medium text-foreground mb-2">Material Composition:</p>
+                    <div className={`space-y-1 ${showResult ? "text-primary" : "text-muted-foreground"}`}>
+                      <p className={showResult ? "bg-primary/10 px-2 py-1 rounded -mx-2" : ""}>
+                        65% Recycled Polyester
+                      </p>
+                      <p className={showResult ? "bg-primary/10 px-2 py-1 rounded -mx-2" : ""}>
+                        30% Organic Cotton
+                      </p>
+                      <p className={showResult ? "bg-primary/10 px-2 py-1 rounded -mx-2" : ""}>
+                        5% Elastane
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className={`transition-all duration-500 ${isProcessing ? "animate-pulse" : ""}`}>
+                    <p className="font-medium text-foreground mb-2">Certifications:</p>
+                    <div className={`space-y-1 ${showResult ? "text-primary" : "text-muted-foreground"}`}>
+                      <p className={showResult ? "bg-primary/10 px-2 py-1 rounded -mx-2" : ""}>
+                        GOTS Certified: GOTS-2024-78456
+                      </p>
+                      <p className={showResult ? "bg-primary/10 px-2 py-1 rounded -mx-2" : ""}>
+                        OEKO-TEX Standard 100: OT-24-89012
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-6 text-center">
-                <Button
-                  size="lg"
-                  onClick={handleDemo}
-                  disabled={isProcessing || showResult}
-                >
-                  {isProcessing ? (
-                    <>Processing...</>
-                  ) : showResult ? (
-                    <>Extracted!</>
-                  ) : (
-                    <>
-                      Extract Data
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </>
-                  )}
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Extraction Result */}
-          <Card
-            className={showResult ? "border-green-200" : "border-muted opacity-60"}
-          >
-            <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Extracted Data</CardTitle>
-                {showResult && (
-                  <Badge variant="success">
-                    {mockExtractionResult.overall_confidence}% Confidence
-                  </Badge>
+              {/* Action button */}
+              <div className="mt-6 flex justify-center">
+                {showResult ? (
+                  <Button variant="outline" onClick={handleReset}>
+                    Reset Demo
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleDemo}
+                    disabled={isProcessing}
+                    className="glow-primary"
+                  >
+                    {isProcessing ? (
+                      <>
+                        <span className="h-4 w-4 mr-2 rounded-full border-2 border-primary-foreground/30 border-t-primary-foreground animate-spin" />
+                        Extracting...
+                      </>
+                    ) : (
+                      <>
+                        Extract Data
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </>
+                    )}
+                  </Button>
                 )}
               </div>
-              <CardDescription>
-                {showResult
-                  ? "Structured data ready for export"
-                  : "Click 'Extract Data' to see the result"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
+            </div>
+          </div>
+
+          {/* Extraction Result */}
+          <div
+            className={`rounded-2xl border overflow-hidden transition-all duration-500 ${
+              showResult
+                ? "border-primary/50 bg-card shadow-glow"
+                : "border-border/50 bg-card/30 opacity-60"
+            }`}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border/50 bg-secondary/30">
+              <div className="flex items-center gap-3">
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${
+                  showResult ? "bg-primary/20" : "bg-secondary"
+                }`}>
+                  {showResult ? (
+                    <Check className="h-4 w-4 text-primary" />
+                  ) : (
+                    <span className="h-4 w-4 text-muted-foreground">?</span>
+                  )}
+                </div>
+                <div>
+                  <h3 className="font-semibold text-foreground">Extracted Data</h3>
+                  <p className="text-xs text-muted-foreground">
+                    {showResult ? "Ready for export" : "Waiting for extraction"}
+                  </p>
+                </div>
+              </div>
+              {showResult && (
+                <span className="px-3 py-1.5 rounded-full bg-primary/20 text-primary text-xs font-medium">
+                  {mockExtractionResult.overall_confidence}% Confidence
+                </span>
+              )}
+            </div>
+
+            <div className="p-6">
               {showResult ? (
-                <div className="space-y-6">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      Document Type
-                    </p>
-                    <p className="font-medium">
-                      {mockExtractionResult.document_type}
-                    </p>
+                <div className="space-y-5 animate-fade-in">
+                  {/* Document Type */}
+                  <div className="p-3 rounded-lg bg-secondary/30 border border-border/30">
+                    <p className="text-xs text-muted-foreground mb-1">Document Type</p>
+                    <p className="font-medium">{mockExtractionResult.document_type}</p>
                   </div>
 
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">
-                      Supplier
-                    </p>
-                    <p className="font-medium">
-                      {mockExtractionResult.supplier.company_name}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {mockExtractionResult.supplier.country}
-                    </p>
+                  {/* Supplier */}
+                  <div className="p-3 rounded-lg bg-secondary/30 border border-border/30">
+                    <p className="text-xs text-muted-foreground mb-1">Supplier</p>
+                    <p className="font-medium">{mockExtractionResult.supplier.company_name}</p>
+                    <p className="text-sm text-muted-foreground">{mockExtractionResult.supplier.country}</p>
                   </div>
 
+                  {/* Materials */}
                   <div>
-                    <p className="mb-2 text-sm font-medium text-muted-foreground">
-                      Materials
-                    </p>
+                    <p className="text-xs text-muted-foreground mb-2">Materials</p>
                     <div className="space-y-2">
                       {mockExtractionResult.materials.map((material) => (
                         <div
                           key={material.name}
-                          className="flex items-center justify-between text-sm"
+                          className="flex items-center justify-between p-2 rounded-lg bg-secondary/20 border border-border/20"
                         >
-                          <span>
+                          <span className="text-sm">
                             {material.name} ({material.percentage})
                           </span>
-                          <ConfidenceIndicator
-                            confidence={material.confidence}
-                          />
+                          <ConfidenceBadge confidence={material.confidence} />
                         </div>
                       ))}
                     </div>
                   </div>
 
+                  {/* Certifications */}
                   <div>
-                    <p className="mb-2 text-sm font-medium text-muted-foreground">
-                      Certifications
-                    </p>
+                    <p className="text-xs text-muted-foreground mb-2">Certifications</p>
                     <div className="space-y-2">
                       {mockExtractionResult.certifications.map((cert) => (
                         <div
                           key={cert.type}
-                          className="flex items-center justify-between text-sm"
+                          className="flex items-center justify-between p-2 rounded-lg bg-secondary/20 border border-border/20"
                         >
-                          <span>
+                          <span className="text-sm">
                             {cert.type}: {cert.number}
                           </span>
-                          <ConfidenceIndicator confidence={cert.confidence} />
+                          <ConfidenceBadge confidence={cert.confidence} />
                         </div>
                       ))}
                     </div>
                   </div>
 
-                  <div className="flex gap-2 pt-4">
-                    <Button size="sm" variant="outline">
+                  {/* Export buttons */}
+                  <div className="flex gap-3 pt-2">
+                    <Button size="sm" className="flex-1">
                       Export JSON
                     </Button>
-                    <Button size="sm" variant="outline">
+                    <Button size="sm" variant="outline" className="flex-1">
                       Export CSV
                     </Button>
                   </div>
                 </div>
               ) : (
-                <div className="flex h-64 items-center justify-center text-muted-foreground">
-                  <p>Waiting for extraction...</p>
+                <div className="flex flex-col items-center justify-center h-80 text-muted-foreground">
+                  <div className="w-16 h-16 rounded-full bg-secondary/50 flex items-center justify-center mb-4">
+                    <FileText className="h-8 w-8" />
+                  </div>
+                  <p className="text-sm">Click &ldquo;Extract Data&rdquo; to see results</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -43,11 +43,75 @@ const config: Config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+      },
+      fontSize: {
+        '2xs': ['0.625rem', { lineHeight: '0.75rem' }],
+      },
+      animation: {
+        'fade-in': 'fadeIn 0.5s ease-out forwards',
+        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+        'slide-in-left': 'slideInLeft 0.5s ease-out forwards',
+        'slide-in-right': 'slideInRight 0.5s ease-out forwards',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
+        'bounce-slow': 'bounce 2s ease-in-out infinite',
+        'glow': 'glow 2s ease-in-out infinite alternate',
+      },
+      keyframes: {
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        fadeInUp: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        slideInLeft: {
+          '0%': { opacity: '0', transform: 'translateX(-20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        slideInRight: {
+          '0%': { opacity: '0', transform: 'translateX(20px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
+        },
+        glow: {
+          '0%': { boxShadow: '0 0 20px hsl(var(--primary) / 0.3)' },
+          '100%': { boxShadow: '0 0 30px hsl(var(--primary) / 0.5)' },
+        },
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'grid-pattern': 'linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px)',
+        'dot-pattern': 'radial-gradient(circle, hsl(var(--border) / 0.5) 1px, transparent 1px)',
+      },
+      backgroundSize: {
+        'grid': '60px 60px',
+        'dot': '20px 20px',
+      },
+      boxShadow: {
+        'glow-sm': '0 0 10px hsl(var(--primary) / 0.2)',
+        'glow': '0 0 20px hsl(var(--primary) / 0.3)',
+        'glow-lg': '0 0 40px hsl(var(--primary) / 0.4)',
+        'inner-glow': 'inset 0 0 20px hsl(var(--primary) / 0.1)',
+      },
+      transitionDuration: {
+        '400': '400ms',
       },
     },
   },
