@@ -102,7 +102,7 @@ export function FAQ() {
             <span className="text-gradient-primary">Questions</span>
           </h2>
           <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            Everything you need to know about ATESTO. Can't find what you're looking for? 
+            Everything you need to know about ATESTO. Can&apos;t find what you&apos;re looking for? 
             <a href="mailto:support@atesto.io" className="text-primary hover:underline ml-1">Contact us</a>
           </p>
         </div>
