@@ -1,125 +1,165 @@
 "use client";
 
-import { Clock, Shield, TrendingUp, Target, Zap, Database } from "lucide-react";
-
-const benefits = [
-  {
-    icon: Clock,
-    title: "Save 20+ hours per month",
-    description: "Eliminate manual data entry from supplier documents. What took hours now takes seconds.",
-  },
-  {
-    icon: Shield,
-    title: "Reduce compliance risk",
-    description: "Never miss critical compliance data. Automated extraction catches what humans miss.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Accelerate audits 10x",
-    description: "Instantly compile supplier compliance data. Export structured reports in one click.",
-  },
-  {
-    icon: Target,
-    title: "95%+ extraction accuracy",
-    description: "AI-powered recognition delivers enterprise-grade accuracy with confidence scoring.",
-  },
-  {
-    icon: Zap,
-    title: "Process in seconds",
-    description: "Upload a document, get structured data in 10-30 seconds. No waiting, no queues.",
-  },
-  {
-    icon: Database,
-    title: "Build your compliance database",
-    description: "Searchable archive of all supplier data. Find any certificate, any time.",
-  },
-];
+import { Clock, Shield, TrendingUp, ArrowRight, Zap } from "lucide-react";
+import { useScrollAnimation, useCountAnimation } from "@/hooks/useScrollAnimation";
 
 export function Benefits() {
+  const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
+
   return (
-    <section id="benefits" className="py-24 lg:py-32">
+    <section id="benefits" ref={ref} className="py-24 lg:py-32 bg-secondary/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-            Stop wasting time on
-            <span className="text-gradient-primary"> manual data entry</span>
+        <div
+          className={`text-center max-w-3xl mx-auto mb-16 ${
+            isInView ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            Accelerate your{" "}
+            <span className="text-gradient-primary">roadmap</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Focus on compliance decisions, not document processing. ATESTO handles the extraction.
+            ATESTO goes behind the scenes in a suite of API's and tooling to ship
+            production-ready pipelines in record time.
           </p>
         </div>
 
-        {/* Benefits grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map((benefit, index) => (
-            <div
-              key={benefit.title}
-              className="group relative p-6 rounded-xl border border-border/50 bg-card/50 hover:bg-card hover:border-primary/30 transition-all duration-300 hover-lift"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {/* Icon */}
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
-                <benefit.icon className="h-6 w-6 text-primary" />
-              </div>
-
-              {/* Content */}
-              <h3 className="text-lg font-semibold text-foreground mb-2">
-                {benefit.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                {benefit.description}
+        {/* Comparison cards */}
+        <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Without ATESTO */}
+          <div
+            className={`relative rounded-2xl border border-border/50 bg-white p-8 overflow-hidden ${
+              isInView ? "animate-fade-in-left" : "opacity-0"
+            }`}
+            style={{ animationDelay: "200ms" }}
+          >
+            <div className="relative z-10">
+              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-6">
+                Without ATESTO
               </p>
 
-              {/* Hover glow effect */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+              {/* Timeline visual */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-destructive/50" />
+                  <span className="text-sm text-muted-foreground">
+                    Lowest quality data, significant implementation
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-3 h-3 rounded-full bg-destructive/40" />
+                  <span className="text-sm text-muted-foreground">
+                    Errors, and ongoing expense
+                  </span>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="flex items-baseline gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Accuracy</p>
+                  <p className="text-3xl font-bold text-foreground font-display">
+                    ~80%
+                  </p>
+                </div>
+                <div className="text-muted-foreground/50">|</div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Timeline</p>
+                  <p className="text-3xl font-bold text-foreground font-display">
+                    Months?
+                  </p>
+                </div>
+              </div>
+
+              {/* Progress bar - incomplete */}
+              <div className="mt-6">
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div className="h-full w-3/4 bg-gradient-to-r from-muted-foreground/30 to-muted-foreground/20 rounded-full" />
+                </div>
+              </div>
             </div>
-          ))}
+
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-muted/50 rounded-full blur-3xl" />
+          </div>
+
+          {/* With ATESTO */}
+          <div
+            className={`relative rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-white to-white p-8 overflow-hidden shadow-glow ${
+              isInView ? "animate-fade-in-right" : "opacity-0"
+            }`}
+            style={{ animationDelay: "300ms" }}
+          >
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-6">
+                <p className="text-sm font-medium text-primary uppercase tracking-wide">
+                  With ATESTO
+                </p>
+                <span className="px-2 py-0.5 rounded-full bg-primary/10 text-xs font-medium text-primary">
+                  Recommended
+                </span>
+              </div>
+
+              {/* Benefits list */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Zap className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-sm text-foreground font-medium">
+                    Rapidly improve accuracy and ship incredible
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Shield className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-sm text-foreground font-medium">
+                    Products, no metadata work
+                  </span>
+                </div>
+              </div>
+
+              {/* Stats */}
+              <div className="flex items-baseline gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">Accuracy</p>
+                  <p className="text-3xl font-bold text-primary font-display">
+                    &gt;99%
+                  </p>
+                </div>
+                <div className="text-muted-foreground/50">|</div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Timeline</p>
+                  <p className="text-3xl font-bold text-primary font-display">Days</p>
+                </div>
+              </div>
+
+              {/* Progress bar - complete with animation */}
+              <div className="mt-6">
+                <div className="h-2 bg-primary/20 rounded-full overflow-hidden">
+                  <div className="h-full w-full bg-gradient-to-r from-primary to-primary/80 rounded-full animate-shimmer" />
+                </div>
+              </div>
+            </div>
+
+            {/* Background decoration */}
+            <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
+            <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-copper/10 rounded-full blur-2xl" />
+          </div>
         </div>
 
-        {/* Before/After comparison */}
-        <div className="mt-20 rounded-2xl border border-border/50 bg-card/30 p-8 lg:p-12">
-          <h3 className="text-center text-xl font-semibold mb-8">
-            Time saved per 100 documents
-          </h3>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Before - Manual */}
-            <div className="rounded-xl border-2 border-destructive/30 bg-destructive/5 p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-destructive/20">
-                  <Clock className="h-6 w-6 text-destructive" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-destructive/80 uppercase tracking-wide">
-                    Manual Process
-                  </p>
-                  <p className="text-4xl font-bold text-destructive mt-1">40+ hours</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Opening PDFs, copy-pasting data, fixing typos, organizing spreadsheets
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* After - ATESTO */}
-            <div className="rounded-xl border-2 border-primary/30 bg-primary/5 p-6">
-              <div className="flex items-start gap-4">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/20">
-                  <Zap className="h-6 w-6 text-primary" />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-primary/80 uppercase tracking-wide">
-                    With ATESTO
-                  </p>
-                  <p className="text-4xl font-bold text-primary mt-1">45 minutes</p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Batch upload, review extracted data, export. Done in one session.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Bottom CTA */}
+        <div
+          className={`text-center mt-12 ${
+            isInView ? "animate-fade-in-up" : "opacity-0"
+          }`}
+          style={{ animationDelay: "500ms" }}
+        >
+          <p className="text-muted-foreground">
+            Join 500+ companies already shipping faster with ATESTO
+          </p>
         </div>
       </div>
     </section>
