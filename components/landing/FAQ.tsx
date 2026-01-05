@@ -1,138 +1,143 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, HelpCircle, ArrowRight } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import Link from "next/link";
+import { ChevronDown, MessageCircle } from "lucide-react";
 
-const faqs = [
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+const faqs: FAQItem[] = [
   {
-    question: "How does ATESTO's code or document AI work?",
-    answer:
-      "Use either Claude or OpenAI as Greptile's backend for document analysis. Greptile indexes your documents and provides context-aware extraction, enabling it to understand document structure, identify key fields, and extract data accurately. The system learns from each extraction to improve accuracy over time.",
+    question: "How does ATESTO's document AI work?",
+    answer: "ATESTO uses advanced vision models specifically trained for document analysis. Our system indexes your documents and provides context-aware extraction, enabling it to understand document structure, identify key fields, and extract data accurately. The system learns from each extraction to improve accuracy over time."
   },
   {
-    question: "What programming languages does Greptile support?",
-    answer:
-      "ATESTO supports processing documents in any language. Our vision models can parse PDFs, images (PNG, JPG, TIFF), and scanned documents. We handle certificates, material declarations, safety data sheets, spec sheets, and supplier compliance documents in any of these formats with high accuracy.",
+    question: "What document formats does ATESTO support?",
+    answer: "ATESTO supports processing documents in any format. Our vision models can parse PDFs, images (PNG, JPG, TIFF), and scanned documents. We handle certificates, material declarations, safety data sheets, spec sheets, and supplier compliance documents in any of these formats with high accuracy."
   },
   {
-    question: "Why is ATESTO different from other document AI solutions?",
-    answer:
-      "ATESTO combines state-of-the-art vision models with intelligent agents that learn from your documents. Unlike generic solutions, our system is optimized for compliance documents and provides confidence scoring, continuous learning, and enterprise-grade security. We achieve 99%+ accuracy on well-formatted documents.",
+    question: "How do I integrate ATESTO into my workflow?",
+    answer: "Pro and Enterprise plans include full API access. You can integrate ATESTO into your existing workflows by uploading documents via our REST API and receiving structured JSON data in return. Check our documentation for code examples in Python, JavaScript, and other languages."
   },
   {
-    question: "How do I use Greptile's API for my project?",
-    answer:
-      "Pro and Enterprise plans include API access. You can integrate ATESTO into your existing workflows by uploading documents via our REST API and receiving structured JSON data in return. Check our documentation for code examples in Python, JavaScript, and other languages.",
+    question: "What kind of accuracy can I expect?",
+    answer: "ATESTO consistently achieves 98%+ extraction accuracy across most document types. Our AI models continuously learn and improve from corrections, often reaching 99%+ accuracy on document types you process frequently. You can monitor accuracy in real-time through our built-in evaluation dashboard."
   },
   {
-    question: "Can I use ATESTO for my private documents?",
-    answer:
-      "Yes, absolutely. All documents are encrypted at rest and in transit. We're SOC 2 compliant and don't train models on your data. Enterprise customers can opt for on-premise deployment or dedicated infrastructure for maximum privacy and compliance.",
+    question: "Is my data secure with ATESTO?",
+    answer: "Absolutely. ATESTO is SOC 2 Type II compliant with enterprise-grade security. All data is encrypted at rest and in transit. We offer data residency options for EU customers, and we never use your documents to train models without explicit consent."
+  },
+  {
+    question: "Can ATESTO handle multi-language documents?",
+    answer: "Yes, ATESTO supports documents in over 50 languages. Our vision models are trained to understand document structure regardless of language, making it ideal for global supply chain compliance where documents arrive in various languages."
+  },
+  {
+    question: "What's the difference between Free and Pro plans?",
+    answer: "The Free plan includes 50 document extractions per month with our core extraction features. Pro unlocks unlimited extractions, API access, custom extraction schemas, priority processing, and advanced analytics. Enterprise adds SSO, dedicated support, and custom integrations."
   },
 ];
 
+function FAQAccordion({ item, isOpen, onToggle }: { 
+  item: FAQItem; 
+  isOpen: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <div 
+      className={`border-b border-border/50 last:border-b-0 ${
+        isOpen ? 'bg-secondary/30' : ''
+      } transition-colors duration-300`}
+    >
+      <button
+        onClick={onToggle}
+        className="w-full py-6 px-6 flex items-center justify-between text-left group"
+        aria-expanded={isOpen}
+      >
+        <span className="font-medium text-foreground pr-8 group-hover:text-primary transition-colors">
+          {item.question}
+        </span>
+        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+          isOpen 
+            ? 'bg-primary text-primary-foreground rotate-180' 
+            : 'bg-secondary text-muted-foreground group-hover:bg-primary/10'
+        }`}>
+          <ChevronDown className="w-4 h-4" />
+        </div>
+      </button>
+      
+      <div 
+        className={`overflow-hidden transition-all duration-500 ease-smooth ${
+          isOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <p className="px-6 pb-6 text-muted-foreground leading-relaxed">
+          {item.answer}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export function FAQ() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
   const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section ref={ref} className="py-24 lg:py-32">
-      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div
-          className={`text-center mb-16 ${
-            isInView ? "animate-fade-in-up" : "opacity-0"
+    <section id="faq" ref={ref} className="section-padding">
+      <div className="container-narrow">
+        <div 
+          className={`text-center mb-12 ${
+            isInView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
-          <span className="badge-primary text-sm font-medium mb-4 inline-flex">
-            <HelpCircle className="w-4 h-4 mr-2" />
+          <span className="badge-neutral mb-4">
+            <MessageCircle className="w-3.5 h-3.5" />
             Support
           </span>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight mt-4">
-            Frequently Asked{" "}
+          <h2 className="font-serif text-display-sm lg:text-display tracking-tight mt-4">
+            Frequently Asked{' '}
             <span className="text-gradient-primary">Questions</span>
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            See what other devs ask us frequently via Discord and email
+          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
+            Everything you need to know about ATESTO. Can't find what you're looking for? 
+            <a href="mailto:support@atesto.io" className="text-primary hover:underline ml-1">Contact us</a>
           </p>
         </div>
-
-        {/* FAQ accordion */}
-        <div className="space-y-4">
-          {faqs.map((faq, index) => (
-            <div
+        
+        <div 
+          className={`rounded-2xl border border-border/50 bg-card overflow-hidden shadow-soft ${
+            isInView ? 'animate-fade-in-up' : 'opacity-0'
+          }`}
+          style={{ animationDelay: '200ms' }}
+        >
+          {faqs.map((item, index) => (
+            <FAQAccordion
               key={index}
-              className={`rounded-2xl border overflow-hidden transition-all duration-500 ${
-                openIndex === index
-                  ? "border-primary/30 bg-white shadow-medium"
-                  : "border-border/50 bg-white hover:border-border"
-              } ${isInView ? "animate-fade-in-up" : "opacity-0"}`}
-              style={{ animationDelay: `${(index + 1) * 100}ms` }}
-            >
-              <button
-                className="flex w-full items-center justify-between p-6 text-left group"
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                aria-expanded={openIndex === index}
-              >
-                <span className="font-semibold text-foreground pr-4 group-hover:text-primary transition-colors font-display">
-                  {faq.question}
-                </span>
-                <div
-                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    openIndex === index
-                      ? "bg-primary/10 rotate-180"
-                      : "bg-secondary"
-                  }`}
-                >
-                  <ChevronDown
-                    className={`h-4 w-4 transition-colors ${
-                      openIndex === index
-                        ? "text-primary"
-                        : "text-muted-foreground"
-                    }`}
-                  />
-                </div>
-              </button>
-
-              <div
-                className={`overflow-hidden transition-all duration-500 ${
-                  openIndex === index ? "max-h-96" : "max-h-0"
-                }`}
-              >
-                <p className="px-6 pb-6 text-muted-foreground leading-relaxed">
-                  {faq.answer}
-                </p>
-              </div>
-            </div>
+              item={item}
+              isOpen={openIndex === index}
+              onToggle={() => setOpenIndex(openIndex === index ? null : index)}
+            />
           ))}
         </div>
-
-        {/* Contact support */}
-        <div
-          className={`mt-12 p-6 rounded-2xl bg-secondary/50 border border-border/50 ${
-            isInView ? "animate-fade-in-up" : "opacity-0"
+        
+        <div 
+          className={`mt-12 text-center ${
+            isInView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
-          style={{ animationDelay: "600ms" }}
+          style={{ animationDelay: '400ms' }}
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div>
-              <p className="font-medium text-foreground">
-                Can&apos;t find the answer you&apos;re looking for?
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Reach out to our support team for personalized help.
-              </p>
-            </div>
-            <Link
-              href="mailto:support@atesto.io"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white border border-border/50 text-foreground font-medium hover:border-primary/30 hover:text-primary transition-all group shadow-soft"
+          <p className="text-muted-foreground">
+            Still have questions?{' '}
+            <a 
+              href="mailto:support@atesto.io" 
+              className="text-primary font-medium hover:underline"
             >
-              Contact Support
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-          </div>
+              Get in touch with our team
+            </a>
+          </p>
         </div>
       </div>
     </section>

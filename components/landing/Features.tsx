@@ -1,20 +1,21 @@
 "use client";
 
-import {
-  FileText,
-  Shield,
-  Zap,
-  Download,
-  Eye,
-  Building2,
-  Search,
-  Lock,
-  Cpu,
-  BarChart3,
-  RefreshCw,
-  type LucideIcon,
-} from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { 
+  Eye, 
+  Cpu, 
+  Zap, 
+  RefreshCw, 
+  BarChart3, 
+  Building2, 
+  Search, 
+  Lock,
+  FileText,
+  CheckCircle,
+  TrendingUp,
+  Shield
+} from "lucide-react";
+import { type LucideIcon } from "lucide-react";
 
 interface Feature {
   icon: LucideIcon;
@@ -23,107 +24,75 @@ interface Feature {
   highlight?: string;
 }
 
-// Bento Card Component with different styles
-function BentoCard({
-  feature,
+function BentoCard({ 
+  feature, 
   variant = "default",
   className = "",
   index = 0,
-  isInView = false,
-}: {
+  isInView = false
+}: { 
   feature: Feature;
-  variant?: "default" | "large" | "highlight" | "dark";
+  variant?: "default" | "large" | "highlight";
   className?: string;
   index?: number;
   isInView?: boolean;
 }) {
-  const IconComponent = feature.icon;
-
-  const baseClasses =
-    "group relative rounded-2xl border transition-all duration-500 overflow-hidden card-shine";
-  const variantClasses = {
-    default:
-      "p-6 bg-white border-border/50 hover:border-primary/30 hover:shadow-medium",
-    large:
-      "p-8 bg-white border-border/50 hover:border-primary/30 hover:shadow-large",
-    highlight:
-      "p-8 bg-gradient-to-br from-primary/5 via-white to-white border-primary/20 hover:border-primary/40 hover:shadow-glow",
-    dark:
-      "p-8 bg-foreground text-background border-foreground hover:shadow-elevated",
+  const Icon = feature.icon;
+  
+  const baseClasses = "card-premium p-6 group";
+  const variantClasses: Record<string, string> = {
+    default: "",
+    large: "lg:row-span-2",
+    highlight: "card-highlight",
   };
-
+  
   return (
-    <div
+    <div 
       className={`${baseClasses} ${variantClasses[variant]} ${className} ${
-        isInView ? "animate-fade-in-up" : "opacity-0"
+        isInView ? 'animate-fade-in-up' : 'opacity-0'
       }`}
-      style={{ animationDelay: `${index * 100}ms` }}
+      style={{ animationDelay: `${200 + index * 100}ms` }}
     >
-      {/* Icon */}
-      <div
-        className={`flex h-12 w-12 items-center justify-center rounded-xl mb-5 transition-all duration-300 ${
-          variant === "dark"
-            ? "bg-background/10 group-hover:bg-background/20"
-            : "bg-primary/10 group-hover:bg-primary/15 group-hover:scale-110"
-        }`}
-      >
-        <IconComponent
-          className={`h-6 w-6 ${
-            variant === "dark" ? "text-background" : "text-primary"
-          }`}
-        />
-      </div>
-
-      {/* Content */}
-      <h3
-        className={`text-lg font-semibold mb-2 font-display ${
-          variant === "dark" ? "text-background" : "text-foreground"
-        }`}
-      >
-        {feature.title}
-      </h3>
-      <p
-        className={`text-sm leading-relaxed ${
-          variant === "dark" ? "text-background/70" : "text-muted-foreground"
-        }`}
-      >
-        {feature.description}
-      </p>
-
-      {/* Highlight badge */}
-      {feature.highlight && (
-        <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
-          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-          <span className="text-xs font-medium text-primary">
-            {feature.highlight}
-          </span>
+      <div className="relative z-10">
+        {feature.highlight && (
+          <span className="badge-primary text-xs mb-4">{feature.highlight}</span>
+        )}
+        
+        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 mb-5 group-hover:bg-primary/15 group-hover:scale-110 transition-all duration-300">
+          <Icon className="h-6 w-6 text-primary" />
         </div>
-      )}
-
-      {/* Hover gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+        
+        <h3 className="text-lg font-semibold font-display text-foreground mb-3">
+          {feature.title}
+        </h3>
+        
+        <p className="text-muted-foreground text-sm leading-relaxed">
+          {feature.description}
+        </p>
+      </div>
+      
+      <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-radial from-primary/5 to-transparent rounded-tl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </div>
   );
 }
 
-// Visual Demo Card for the bento grid
-function VisualDemoCard({
-  isInView,
-  index,
-}: {
-  isInView: boolean;
-  index: number;
-}) {
+function LiveDemoCard({ isInView, index }: { isInView: boolean; index: number }) {
   return (
-    <div
-      className={`group relative rounded-2xl border border-border/50 bg-gradient-to-br from-secondary/50 to-white p-6 overflow-hidden hover:shadow-large transition-all duration-500 ${
-        isInView ? "animate-fade-in-up" : "opacity-0"
+    <div 
+      className={`card-premium p-6 overflow-hidden ${
+        isInView ? 'animate-fade-in-up' : 'opacity-0'
       }`}
-      style={{ animationDelay: `${index * 100}ms` }}
+      style={{ animationDelay: `${200 + index * 100}ms` }}
     >
-      {/* Mock interface */}
-      <div className="space-y-4">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 mb-4">
+        <span className="badge-copper text-xs">
+          <Zap className="w-3 h-3" />
+          Live Demo
+        </span>
+      </div>
+      
+      <div className="rounded-xl bg-secondary/50 border border-border/30 p-4">
+        <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
             <FileText className="w-5 h-5 text-primary" />
           </div>
@@ -132,34 +101,36 @@ function VisualDemoCard({
             <p className="text-xs text-muted-foreground">Processing...</p>
           </div>
         </div>
-
-        {/* Progress bars */}
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs mb-1">
-            <span className="text-muted-foreground">Parsing document</span>
-            <span className="text-primary font-medium">Complete</span>
+        
+        <div className="space-y-3">
+          <div>
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-muted-foreground">Parsing document</span>
+              <span className="text-primary font-medium flex items-center gap-1">
+                <CheckCircle className="w-3 h-3" /> Complete
+              </span>
+            </div>
+            <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+              <div className="h-full w-full bg-primary rounded-full" />
+            </div>
           </div>
-          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-            <div className="h-full w-full bg-primary rounded-full" />
+          
+          <div>
+            <div className="flex justify-between text-xs mb-1">
+              <span className="text-muted-foreground">Extracting fields</span>
+              <span className="text-primary font-medium">14 found</span>
+            </div>
+            <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+              <div className="h-full w-4/5 bg-primary rounded-full animate-pulse" />
+            </div>
           </div>
         </div>
-
-        <div className="space-y-2">
-          <div className="flex justify-between text-xs mb-1">
-            <span className="text-muted-foreground">Extracting fields</span>
-            <span className="text-primary font-medium">12 found</span>
-          </div>
-          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-            <div className="h-full w-4/5 bg-primary rounded-full animate-pulse" />
-          </div>
-        </div>
-
-        {/* Extracted data preview */}
-        <div className="p-3 rounded-lg bg-white border border-border/50 mt-4">
+        
+        <div className="mt-4 p-3 rounded-lg bg-card border border-border/50">
           <div className="grid grid-cols-2 gap-2 text-xs">
             <div>
               <span className="text-muted-foreground">Supplier</span>
-              <p className="font-medium">EcoTextiles GmbH</p>
+              <p className="font-medium truncate">EcoTextiles GmbH</p>
             </div>
             <div>
               <span className="text-muted-foreground">Certificate</span>
@@ -168,9 +139,52 @@ function VisualDemoCard({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
 
-      {/* Floating accent */}
-      <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
+function AccuracyChartCard({ isInView, index }: { isInView: boolean; index: number }) {
+  return (
+    <div 
+      className={`card-premium p-6 ${
+        isInView ? 'animate-fade-in-up' : 'opacity-0'
+      }`}
+      style={{ animationDelay: `${200 + index * 100}ms` }}
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-lg font-semibold font-display">Accuracy Over Time</h3>
+          <p className="text-xs text-muted-foreground">Self-improving AI models</p>
+        </div>
+        <div className="flex items-center gap-1 text-primary">
+          <TrendingUp className="w-4 h-4" />
+          <span className="text-sm font-semibold">+12%</span>
+        </div>
+      </div>
+      
+      <div className="h-32 flex items-end gap-2">
+        {[65, 72, 78, 82, 88, 93, 96, 98].map((value, i) => (
+          <div key={i} className="flex-1 flex flex-col items-center gap-1">
+            <div 
+              className="w-full bg-primary/20 rounded-t-sm relative overflow-hidden"
+              style={{ height: `${value}%` }}
+            >
+              <div 
+                className="absolute inset-x-0 bottom-0 bg-primary rounded-t-sm transition-all duration-1000"
+                style={{ 
+                  height: isInView ? '100%' : '0%',
+                  transitionDelay: `${500 + i * 100}ms`
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+        <span>Week 1</span>
+        <span>Week 8</span>
+      </div>
     </div>
   );
 }
@@ -189,20 +203,20 @@ export function Features() {
       icon: Cpu,
       title: "Agents that optimize performance",
       description:
-        "Our agents learn from your documents, run experiments, and automatically optimize your schemas to ensure the highest accuracy.",
+        "Our agents learn from your documents, run experiments, and automatically optimize your extraction schemas for maximum accuracy.",
       highlight: "AI-Powered",
     },
     {
       icon: Zap,
       title: "Flexible API Toolkit",
       description:
-        "Extend's suite of APIs can enable you to build incredible products with document parsing, classification, extraction, and splitting capabilities.",
+        "ATESTO's suite of APIs enables you to build incredible products with document parsing, classification, extraction, and splitting capabilities.",
     },
     {
       icon: RefreshCw,
       title: "Continuous learning",
       description:
-        "Models improve in-session by learning from each document to improve accuracy on similar ones. Every correction makes us better.",
+        "Models improve in-session by learning from each document to boost accuracy on similar ones. Every correction makes us better.",
     },
     {
       icon: BarChart3,
@@ -234,98 +248,85 @@ export function Features() {
   ];
 
   return (
-    <section id="features" ref={ref} className="py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
-        <div
+    <section id="features" ref={ref} className="section-padding bg-section-gradient">
+      <div className="container-custom">
+        <div 
           className={`text-center max-w-3xl mx-auto mb-16 ${
-            isInView ? "animate-fade-in-up" : "opacity-0"
+            isInView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
         >
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-            All-in-one{" "}
+          <h2 className="font-serif text-display-sm lg:text-display tracking-tight mb-4">
+            All-in-one{' '}
             <span className="text-gradient-primary">document processing</span>
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
+          <p className="text-lg text-muted-foreground">
             Enterprise-grade extraction with everything you need to create,
             evaluate, and optimize your most complex use cases.
           </p>
         </div>
 
-        {/* Bento Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* First row - 2 large + 1 visual */}
+        <div className="bento-grid">
           <BentoCard
             feature={mainFeatures[0]}
             variant="large"
-            className="lg:col-span-1"
             index={0}
             isInView={isInView}
           />
           <BentoCard
             feature={mainFeatures[1]}
             variant="highlight"
-            className="lg:col-span-1"
             index={1}
             isInView={isInView}
           />
-          <VisualDemoCard isInView={isInView} index={2} />
+          <LiveDemoCard isInView={isInView} index={2} />
 
-          {/* Second row - 3 regular */}
           <BentoCard
             feature={mainFeatures[2]}
-            variant="default"
             index={3}
             isInView={isInView}
           />
-          <BentoCard
-            feature={mainFeatures[3]}
-            variant="default"
-            index={4}
-            isInView={isInView}
-          />
+          <AccuracyChartCard isInView={isInView} index={4} />
           <BentoCard
             feature={mainFeatures[4]}
-            variant="default"
             index={5}
             isInView={isInView}
           />
         </div>
 
-        {/* Enterprise features banner */}
         <div
-          className={`mt-16 rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background p-8 lg:p-12 ${
-            isInView ? "animate-fade-in-up" : "opacity-0"
+          className={`mt-20 rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-copper/5 p-10 lg:p-14 ${
+            isInView ? 'animate-fade-in-up' : 'opacity-0'
           }`}
-          style={{ animationDelay: "600ms" }}
+          style={{ animationDelay: '600ms' }}
         >
-          <div className="text-center mb-10">
-            <span className="badge-primary text-sm font-medium mb-4">
+          <div className="text-center mb-12">
+            <span className="badge-primary mb-4">
+              <Shield className="w-3.5 h-3.5" />
               Enterprise Features
             </span>
-            <h3 className="text-2xl lg:text-3xl font-bold font-display mt-4">
+            <h3 className="font-serif text-2xl lg:text-3xl font-semibold mt-4">
               Built for scale and security
             </h3>
-            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+            <p className="text-muted-foreground mt-3 max-w-xl mx-auto">
               Everything you need to deploy document processing at enterprise scale.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-10">
             {enterpriseFeatures.map((feature, index) => {
               const IconComp = feature.icon;
               return (
                 <div
                   key={feature.title}
                   className={`text-center group ${
-                    isInView ? "animate-fade-in-up" : "opacity-0"
+                    isInView ? 'animate-fade-in-up' : 'opacity-0'
                   }`}
                   style={{ animationDelay: `${700 + index * 100}ms` }}
                 >
-                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                    <IconComp className="h-7 w-7 text-primary" />
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 mx-auto mb-5 group-hover:bg-primary/15 group-hover:scale-110 transition-all duration-300">
+                    <IconComp className="h-8 w-8 text-primary" />
                   </div>
-                  <h4 className="font-semibold text-foreground mb-2 font-display">
+                  <h4 className="font-display font-semibold text-foreground mb-2">
                     {feature.title}
                   </h4>
                   <p className="text-sm text-muted-foreground">

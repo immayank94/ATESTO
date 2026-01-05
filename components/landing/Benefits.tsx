@@ -1,78 +1,83 @@
 "use client";
 
-import { Clock, Shield, TrendingUp, ArrowRight, Zap } from "lucide-react";
-import { useScrollAnimation, useCountAnimation } from "@/hooks/useScrollAnimation";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { Zap, Shield, CheckCircle, Clock, TrendingDown, TrendingUp, X } from "lucide-react";
 
 export function Benefits() {
   const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
 
   return (
-    <section id="benefits" ref={ref} className="py-24 lg:py-32 bg-secondary/30">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
+    <section id="benefits" ref={ref} className="section-padding bg-secondary/30 pattern-noise">
+      <div className="container-custom">
         <div
           className={`text-center max-w-3xl mx-auto mb-16 ${
             isInView ? "animate-fade-in-up" : "opacity-0"
           }`}
         >
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+          <h2 className="font-serif text-display-sm lg:text-display tracking-tight">
             Accelerate your{" "}
             <span className="text-gradient-primary">roadmap</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            ATESTO goes behind the scenes in a suite of API's and tooling to ship
+            ATESTO goes behind the scenes with a suite of APIs and tooling to ship
             production-ready pipelines in record time.
           </p>
         </div>
 
-        {/* Comparison cards */}
         <div className="grid lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Without ATESTO */}
           <div
-            className={`relative rounded-2xl border border-border/50 bg-white p-8 overflow-hidden ${
+            className={`relative card-premium p-8 ${
               isInView ? "animate-fade-in-left" : "opacity-0"
             }`}
             style={{ animationDelay: "200ms" }}
           >
             <div className="relative z-10">
-              <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-6">
-                Without ATESTO
-              </p>
+              <div className="flex items-center gap-2 mb-6">
+                <X className="w-5 h-5 text-destructive" />
+                <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                  Without ATESTO
+                </p>
+              </div>
 
-              {/* Timeline visual */}
               <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-destructive/50" />
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <TrendingDown className="w-3 h-3 text-destructive" />
+                  </div>
                   <span className="text-sm text-muted-foreground">
-                    Lowest quality data, significant implementation
+                    Manual data entry with lowest quality output
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-destructive/40" />
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Clock className="w-3 h-3 text-destructive" />
+                  </div>
                   <span className="text-sm text-muted-foreground">
-                    Errors, and ongoing expense
+                    Significant implementation time and ongoing expense
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-destructive/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <X className="w-3 h-3 text-destructive" />
+                  </div>
+                  <span className="text-sm text-muted-foreground">
+                    Frequent errors and compliance gaps
                   </span>
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="flex items-baseline gap-4">
+              <div className="flex items-baseline gap-6">
                 <div>
-                  <p className="text-sm text-muted-foreground">Accuracy</p>
-                  <p className="text-3xl font-bold text-foreground font-display">
-                    ~80%
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-1">Accuracy</p>
+                  <p className="text-3xl font-bold text-foreground font-display">~80%</p>
                 </div>
-                <div className="text-muted-foreground/50">|</div>
+                <div className="text-muted-foreground/30 text-2xl font-light">|</div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Timeline</p>
-                  <p className="text-3xl font-bold text-foreground font-display">
-                    Months?
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-1">Timeline</p>
+                  <p className="text-3xl font-bold text-foreground font-display">Months</p>
                 </div>
               </div>
 
-              {/* Progress bar - incomplete */}
               <div className="mt-6">
                 <div className="h-2 bg-muted rounded-full overflow-hidden">
                   <div className="h-full w-3/4 bg-gradient-to-r from-muted-foreground/30 to-muted-foreground/20 rounded-full" />
@@ -80,19 +85,18 @@ export function Benefits() {
               </div>
             </div>
 
-            {/* Background decoration */}
             <div className="absolute top-0 right-0 w-40 h-40 bg-muted/50 rounded-full blur-3xl" />
           </div>
 
-          {/* With ATESTO */}
           <div
-            className={`relative rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/5 via-white to-white p-8 overflow-hidden shadow-glow ${
+            className={`relative card-highlight p-8 border-2 border-primary/30 ${
               isInView ? "animate-fade-in-right" : "opacity-0"
             }`}
             style={{ animationDelay: "300ms" }}
           >
             <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-6">
+              <div className="flex items-center gap-3 mb-6">
+                <CheckCircle className="w-5 h-5 text-primary" />
                 <p className="text-sm font-medium text-primary uppercase tracking-wide">
                   With ATESTO
                 </p>
@@ -101,56 +105,57 @@ export function Benefits() {
                 </span>
               </div>
 
-              {/* Benefits list */}
               <div className="space-y-4 mb-8">
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <TrendingUp className="w-3 h-3 text-primary" />
+                  </div>
+                  <span className="text-sm text-foreground font-medium">
+                    Rapidly improve accuracy and ship incredible products
+                  </span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Zap className="w-3 h-3 text-primary" />
                   </div>
                   <span className="text-sm text-foreground font-medium">
-                    Rapidly improve accuracy and ship incredible
+                    No manual metadata work required
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/15 flex items-center justify-center flex-shrink-0 mt-0.5">
                     <Shield className="w-3 h-3 text-primary" />
                   </div>
                   <span className="text-sm text-foreground font-medium">
-                    Products, no metadata work
+                    Enterprise-grade security and compliance
                   </span>
                 </div>
               </div>
 
-              {/* Stats */}
-              <div className="flex items-baseline gap-4">
+              <div className="flex items-baseline gap-6">
                 <div>
-                  <p className="text-sm text-muted-foreground">Accuracy</p>
-                  <p className="text-3xl font-bold text-primary font-display">
-                    &gt;99%
-                  </p>
+                  <p className="text-sm text-muted-foreground mb-1">Accuracy</p>
+                  <p className="text-3xl font-bold text-primary font-display">&gt;99%</p>
                 </div>
-                <div className="text-muted-foreground/50">|</div>
+                <div className="text-muted-foreground/30 text-2xl font-light">|</div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Timeline</p>
+                  <p className="text-sm text-muted-foreground mb-1">Timeline</p>
                   <p className="text-3xl font-bold text-primary font-display">Days</p>
                 </div>
               </div>
 
-              {/* Progress bar - complete with animation */}
               <div className="mt-6">
                 <div className="h-2 bg-primary/20 rounded-full overflow-hidden">
-                  <div className="h-full w-full bg-gradient-to-r from-primary to-primary/80 rounded-full animate-shimmer" />
+                  <div className="h-full w-full bg-gradient-to-r from-primary to-primary-light rounded-full animate-shimmer" />
                 </div>
               </div>
             </div>
 
-            {/* Background decoration */}
             <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl" />
             <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-copper/10 rounded-full blur-2xl" />
           </div>
         </div>
 
-        {/* Bottom CTA */}
         <div
           className={`text-center mt-12 ${
             isInView ? "animate-fade-in-up" : "opacity-0"
@@ -158,7 +163,7 @@ export function Benefits() {
           style={{ animationDelay: "500ms" }}
         >
           <p className="text-muted-foreground">
-            Join 500+ companies already shipping faster with ATESTO
+            Join <span className="text-foreground font-semibold">500+</span> companies already shipping faster with ATESTO
           </p>
         </div>
       </div>

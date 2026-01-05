@@ -2,92 +2,77 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles, Shield, Zap } from "lucide-react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { ArrowRight, Sparkles, FileCheck, Zap } from "lucide-react";
 
 export function CTA() {
   const { ref, isInView } = useScrollAnimation({ threshold: 0.2 });
 
   return (
-    <section ref={ref} className="py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div
-          className={`relative rounded-3xl overflow-hidden ${
-            isInView ? "animate-scale-in" : "opacity-0"
-          }`}
+    <section ref={ref} className="section-padding relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-copper/5" />
+      <div className="absolute inset-0 pattern-dots opacity-30" />
+      
+      <div className="absolute top-10 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-morph" />
+      <div className="absolute bottom-10 right-10 w-80 h-80 bg-copper/10 rounded-full blur-3xl animate-morph" style={{ animationDelay: "4s" }} />
+      
+      <div className="container-narrow relative z-10">
+        <div 
+          className={`text-center ${isInView ? 'animate-fade-in-up' : 'opacity-0'}`}
         >
-          {/* Background layers */}
-          <div className="absolute inset-0 bg-foreground" />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-copper/10" />
-
-          {/* Decorative elements */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-copper/10 rounded-full blur-3xl" />
-
-          {/* Grid pattern */}
-          <div className="absolute inset-0 grid-pattern opacity-5" />
-
-          {/* Content */}
-          <div className="relative px-8 py-16 sm:px-16 sm:py-24 text-center">
-            {/* Badge */}
-            <div
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 mb-8 ${
-                isInView ? "animate-fade-in-down" : "opacity-0"
-              }`}
-              style={{ animationDelay: "200ms" }}
-            >
-              <Sparkles className="h-4 w-4 text-primary" />
-              <span className="text-sm font-medium text-white/90">
-                Start extracting in minutes
-              </span>
+          <span className="badge-primary mb-6 inline-flex">
+            <Sparkles className="w-3.5 h-3.5" />
+            Start for free
+          </span>
+          
+          <h2 className="font-serif text-display-sm lg:text-display tracking-tight mb-6">
+            Ready to transform your{" "}
+            <span className="text-gradient-primary">document workflows</span>?
+          </h2>
+          
+          <p className="text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto mb-10">
+            Join hundreds of companies using ATESTO to eliminate manual document processing
+            and accelerate their compliance workflows.
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <Link href="/signup">
+              <Button 
+                size="lg" 
+                className="btn-premium h-14 px-10 text-lg font-medium group w-full sm:w-auto"
+              >
+                <span>Start Extracting Free</span>
+                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+            <Link href="#demo">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="btn-secondary-premium h-14 px-8 text-lg font-medium w-full sm:w-auto"
+              >
+                Book a Demo
+              </Button>
+            </Link>
+          </div>
+          
+          <div 
+            className={`flex flex-wrap justify-center gap-6 lg:gap-10 ${
+              isInView ? 'animate-fade-in-up' : 'opacity-0'
+            }`}
+            style={{ animationDelay: '200ms' }}
+          >
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <FileCheck className="w-5 h-5 text-primary" />
+              <span className="text-sm font-medium">No credit card required</span>
             </div>
-
-            {/* Headline */}
-            <h2
-              className={`font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight max-w-3xl mx-auto text-white ${
-                isInView ? "animate-fade-in-up" : "opacity-0"
-              }`}
-              style={{ animationDelay: "300ms" }}
-            >
-              Turn your documents into{" "}
-              <span className="text-primary">high quality data</span>
-            </h2>
-
-            {/* CTA button */}
-            <div
-              className={`mt-10 ${isInView ? "animate-fade-in-up" : "opacity-0"}`}
-              style={{ animationDelay: "400ms" }}
-            >
-              <Link href="/signup">
-                <Button
-                  size="lg"
-                  className="text-base px-10 py-7 bg-white text-foreground hover:bg-white/90 shadow-elevated group font-semibold"
-                >
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Zap className="w-5 h-5 text-copper" />
+              <span className="text-sm font-medium">Setup in 5 minutes</span>
             </div>
-
-            {/* Trust indicators */}
-            <div
-              className={`mt-10 flex flex-wrap items-center justify-center gap-8 ${
-                isInView ? "animate-fade-in-up" : "opacity-0"
-              }`}
-              style={{ animationDelay: "500ms" }}
-            >
-              <div className="flex items-center gap-2 text-white/70">
-                <Shield className="h-4 w-4 text-primary" />
-                <span className="text-sm">SOC 2 Compliant</span>
-              </div>
-              <div className="flex items-center gap-2 text-white/70">
-                <Zap className="h-4 w-4 text-primary" />
-                <span className="text-sm">No credit card required</span>
-              </div>
-              <div className="flex items-center gap-2 text-white/70">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="text-sm">10 free documents/month</span>
-              </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Sparkles className="w-5 h-5 text-primary" />
+              <span className="text-sm font-medium">50 free extractions/month</span>
             </div>
           </div>
         </div>
