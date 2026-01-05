@@ -205,7 +205,7 @@ export function LiveDemo() {
 
               {stage === "idle" && (
                 <div className="h-64 flex items-center justify-center text-muted-foreground">
-                  <p className="text-sm">Select a document and click "Extract Data"</p>
+                  <p className="text-sm">Select a document and click Extract Data</p>
                 </div>
               )}
 

@@ -77,7 +77,7 @@ export function Testimonials() {
                 <div className="relative flex-1">
                   <Quote className="absolute -top-2 -left-2 w-8 h-8 text-primary/10" />
                   <p className="text-foreground/90 relative z-10 italic">
-                    "{testimonial.quote}"
+                    {testimonial.quote}
                   </p>
                 </div>
 
