@@ -2,92 +2,90 @@
 
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, Play, FileText, Sparkles, Shield, Zap } from "lucide-react";
+import { ArrowRight, CheckCircle, Play, FileText, Sparkles, Shield, Zap, Upload } from "lucide-react";
 import Link from "next/link";
 import { ParticleBackground } from "@/components/shared/ParticleBackground";
 import { TiltCard } from "@/components/shared/TiltCard";
 import { AnimatedCounter } from "@/components/shared/AnimatedCounter";
 
-function FloatingDocument({ delay = 0, className = "" }: { delay?: number; className?: string }) {
-  return (
-    <div
-      className={`absolute bg-white rounded-xl shadow-xl border border-border/30 p-4 animate-float ${className}`}
-      style={{ animationDelay: `${delay}ms` }}
-    >
-      <div className="flex items-center gap-2 mb-3">
-        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-          <FileText className="w-4 h-4 text-primary" />
-        </div>
-        <div className="flex-1">
-          <div className="h-2 w-20 bg-muted rounded" />
-          <div className="h-1.5 w-14 bg-muted/50 rounded mt-1" />
-        </div>
-      </div>
-      <div className="space-y-2">
-        <div className="h-2 w-full bg-muted/60 rounded" />
-        <div className="h-2 w-3/4 bg-muted/40 rounded" />
-        <div className="h-2 w-5/6 bg-muted/60 rounded" />
-      </div>
-    </div>
-  );
-}
-
 function ProcessingVisual() {
   return (
-    <TiltCard className="relative">
-      <div className="relative bg-gradient-to-br from-charcoal to-charcoal/90 rounded-2xl p-6 shadow-2xl border border-border/10 overflow-hidden">
+    <TiltCard className="w-full max-w-md" tiltAmount={8}>
+      <div className="relative bg-gradient-to-br from-charcoal via-charcoal/95 to-charcoal/90 rounded-2xl p-6 shadow-2xl border border-white/10 overflow-hidden">
         {/* Glow effects */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-copper/20 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-copper/15 rounded-full blur-3xl" />
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-4 relative z-10">
+        <div className="flex items-center justify-between mb-5 relative z-10">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-red-400" />
             <div className="w-3 h-3 rounded-full bg-yellow-400" />
             <div className="w-3 h-3 rounded-full bg-green-400" />
           </div>
-          <span className="text-xs text-white/40 font-mono">ATESTO Processing</span>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-xs text-white/50 font-mono">Processing</span>
+          </div>
         </div>
         
-        {/* Content */}
-        <div className="space-y-4 relative z-10">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center animate-pulse">
-              <Zap className="w-5 h-5 text-primary" />
-            </div>
-            <div className="flex-1">
-              <div className="text-white/90 text-sm font-medium">Extracting Data...</div>
-              <div className="h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
-                <div className="h-full w-3/4 bg-gradient-to-r from-primary to-copper rounded-full animate-shimmer" />
-              </div>
-            </div>
+        {/* Upload indicator */}
+        <div className="flex items-center gap-3 mb-5 p-3 rounded-xl bg-white/5 border border-white/10 relative z-10">
+          <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
+            <FileText className="w-6 h-6 text-primary" />
           </div>
-          
-          {/* Extracted fields */}
-          <div className="space-y-2">
-            {[
-              { label: "Supplier", value: "EcoMaterials GmbH", conf: 98 },
-              { label: "Certificate", value: "GOTS-2024-78456", conf: 99 },
-              { label: "Valid Until", value: "2025-01-14", conf: 95 },
-            ].map((field, i) => (
-              <div
-                key={field.label}
-                className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2 animate-fade-in-up"
-                style={{ animationDelay: `${i * 200 + 500}ms` }}
-              >
-                <div>
-                  <span className="text-white/40 text-xs">{field.label}</span>
-                  <div className="text-white/90 text-sm">{field.value}</div>
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="text-xs text-primary">{field.conf}%</span>
-                  <CheckCircle className="w-3.5 h-3.5 text-primary" />
-                </div>
-              </div>
-            ))}
+          <div className="flex-1">
+            <div className="text-white/90 text-sm font-medium">GOTS_Certificate.pdf</div>
+            <div className="text-white/40 text-xs">2.4 MB • Uploaded</div>
+          </div>
+          <CheckCircle className="w-5 h-5 text-green-400" />
+        </div>
+        
+        {/* Progress bar */}
+        <div className="mb-5 relative z-10">
+          <div className="flex justify-between text-xs mb-2">
+            <span className="text-white/60">AI Extraction</span>
+            <span className="text-primary font-medium">87%</span>
+          </div>
+          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+            <div className="h-full w-[87%] bg-gradient-to-r from-primary to-primary/70 rounded-full relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
+            </div>
           </div>
         </div>
+        
+        {/* Extracted fields */}
+        <div className="space-y-2.5 relative z-10">
+          <div className="text-xs text-white/40 uppercase tracking-wider mb-3">Extracted Data</div>
+          {[
+            { label: "Supplier", value: "EcoMaterials GmbH", conf: 98 },
+            { label: "Certificate", value: "GOTS-2024-78456", conf: 99 },
+            { label: "Valid Until", value: "2025-01-14", conf: 95 },
+          ].map((field, i) => (
+            <div
+              key={field.label}
+              className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2.5 border border-white/5 animate-fade-in-up"
+              style={{ animationDelay: `${i * 150}ms` }}
+            >
+              <div>
+                <span className="text-white/40 text-xs block">{field.label}</span>
+                <div className="text-white/90 text-sm font-medium">{field.value}</div>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-12 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary rounded-full" 
+                    style={{ width: `${field.conf}%` }}
+                  />
+                </div>
+                <span className="text-xs text-primary font-medium w-8">{field.conf}%</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Bottom glow line */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
       </div>
     </TiltCard>
   );
@@ -103,8 +101,8 @@ export function Hero() {
     >
       {/* Particle Background */}
       <ParticleBackground 
-        particleCount={60} 
-        colors={["rgba(45, 122, 94, 0.3)", "rgba(194, 113, 58, 0.3)", "rgba(139, 154, 125, 0.2)"]}
+        particleCount={40} 
+        colors={["rgba(45, 122, 94, 0.25)", "rgba(194, 113, 58, 0.2)", "rgba(139, 154, 125, 0.15)"]}
         className="z-0"
       />
       
@@ -116,7 +114,7 @@ export function Hero() {
       <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-copper/5 rounded-full blur-3xl -z-10" />
 
       <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Left Column - Text */}
           <div className={`${isInView ? "animate-fade-in-up" : "opacity-0"}`}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
@@ -166,35 +164,27 @@ export function Hero() {
               </div>
               <div>
                 <div className="font-display text-3xl font-bold text-foreground">
-                  <AnimatedCounter end={98} suffix="%" decimals={1} />
+                  <AnimatedCounter end={98} suffix="%" />
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">Accuracy</p>
               </div>
             </div>
           </div>
           
-          {/* Right Column - Visual */}
+          {/* Right Column - Clean Visual */}
           <div
-            className={`relative ${isInView ? "animate-fade-in-left" : "opacity-0"}`}
+            className={`flex justify-center lg:justify-end ${isInView ? "animate-fade-in-left" : "opacity-0"}`}
             style={{ animationDelay: "200ms" }}
           >
-            {/* Floating documents */}
-            <FloatingDocument delay={0} className="top-0 left-0 w-40 z-10" />
-            <FloatingDocument delay={500} className="top-20 right-0 w-36 z-10" />
-            <FloatingDocument delay={1000} className="bottom-10 left-10 w-32 z-10" />
-            
-            {/* Main processing card */}
-            <div className="relative z-20 ml-16 mt-16">
-              <ProcessingVisual />
-            </div>
+            <ProcessingVisual />
           </div>
         </div>
       </div>
       
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce hidden lg:block">
         <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
-          <div className="w-1.5 h-3 bg-muted-foreground/50 rounded-full animate-scroll-indicator" />
+          <div className="w-1.5 h-3 bg-muted-foreground/50 rounded-full" />
         </div>
       </div>
     </section>
