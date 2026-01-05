@@ -2,7 +2,7 @@
 
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, Play, FileText, Sparkles, Shield, Zap, Upload } from "lucide-react";
+import { ArrowRight, CheckCircle, Play, FileText, Sparkles, Zap } from "lucide-react";
 import Link from "next/link";
 import { ParticleBackground } from "@/components/shared/ParticleBackground";
 import { TiltCard } from "@/components/shared/TiltCard";
@@ -11,10 +11,16 @@ import { AnimatedCounter } from "@/components/shared/AnimatedCounter";
 function ProcessingVisual() {
   return (
     <TiltCard className="w-full max-w-md" tiltAmount={8}>
-      <div className="relative bg-gradient-to-br from-charcoal via-charcoal/95 to-charcoal/90 rounded-2xl p-6 shadow-2xl border border-white/10 overflow-hidden">
+      <div 
+        className="relative rounded-2xl p-6 shadow-2xl overflow-hidden"
+        style={{ 
+          background: 'linear-gradient(135deg, #1C1F23 0%, #12151A 100%)',
+          border: '1px solid rgba(255,255,255,0.1)'
+        }}
+      >
         {/* Glow effects */}
-        <div className="absolute top-0 right-0 w-40 h-40 bg-primary/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-copper/15 rounded-full blur-3xl" />
+        <div className="absolute top-0 right-0 w-40 h-40 bg-green-500/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-orange-500/15 rounded-full blur-3xl pointer-events-none" />
         
         {/* Header */}
         <div className="flex items-center justify-between mb-5 relative z-10">
@@ -30,12 +36,18 @@ function ProcessingVisual() {
         </div>
         
         {/* Upload indicator */}
-        <div className="flex items-center gap-3 mb-5 p-3 rounded-xl bg-white/5 border border-white/10 relative z-10">
-          <div className="w-12 h-12 rounded-xl bg-primary/20 flex items-center justify-center">
-            <FileText className="w-6 h-6 text-primary" />
+        <div 
+          className="flex items-center gap-3 mb-5 p-3 rounded-xl relative z-10"
+          style={{ 
+            background: 'rgba(255,255,255,0.05)',
+            border: '1px solid rgba(255,255,255,0.1)'
+          }}
+        >
+          <div className="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+            <FileText className="w-6 h-6 text-emerald-400" />
           </div>
           <div className="flex-1">
-            <div className="text-white/90 text-sm font-medium">GOTS_Certificate.pdf</div>
+            <div className="text-white text-sm font-medium">GOTS_Certificate.pdf</div>
             <div className="text-white/40 text-xs">2.4 MB • Uploaded</div>
           </div>
           <CheckCircle className="w-5 h-5 text-green-400" />
@@ -45,10 +57,13 @@ function ProcessingVisual() {
         <div className="mb-5 relative z-10">
           <div className="flex justify-between text-xs mb-2">
             <span className="text-white/60">AI Extraction</span>
-            <span className="text-primary font-medium">87%</span>
+            <span className="text-emerald-400 font-medium">87%</span>
           </div>
           <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-            <div className="h-full w-[87%] bg-gradient-to-r from-primary to-primary/70 rounded-full relative">
+            <div 
+              className="h-full w-[87%] rounded-full relative"
+              style={{ background: 'linear-gradient(90deg, #2D7A5E 0%, #3D9A7E 100%)' }}
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent animate-shimmer" />
             </div>
           </div>
@@ -64,28 +79,38 @@ function ProcessingVisual() {
           ].map((field, i) => (
             <div
               key={field.label}
-              className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2.5 border border-white/5 animate-fade-in-up"
-              style={{ animationDelay: `${i * 150}ms` }}
+              className="flex items-center justify-between rounded-lg px-3 py-2.5 animate-fade-in-up"
+              style={{ 
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.05)',
+                animationDelay: `${i * 150}ms`
+              }}
             >
               <div>
                 <span className="text-white/40 text-xs block">{field.label}</span>
-                <div className="text-white/90 text-sm font-medium">{field.value}</div>
+                <div className="text-white text-sm font-medium">{field.value}</div>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-12 h-1.5 bg-white/10 rounded-full overflow-hidden">
                   <div 
-                    className="h-full bg-primary rounded-full" 
-                    style={{ width: `${field.conf}%` }}
+                    className="h-full rounded-full" 
+                    style={{ 
+                      width: `${field.conf}%`,
+                      background: '#2D7A5E'
+                    }}
                   />
                 </div>
-                <span className="text-xs text-primary font-medium w-8">{field.conf}%</span>
+                <span className="text-xs text-emerald-400 font-medium w-8">{field.conf}%</span>
               </div>
             </div>
           ))}
         </div>
         
         {/* Bottom glow line */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+        <div 
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px"
+          style={{ background: 'linear-gradient(90deg, transparent, rgba(45,122,94,0.5), transparent)' }}
+        />
       </div>
     </TiltCard>
   );
