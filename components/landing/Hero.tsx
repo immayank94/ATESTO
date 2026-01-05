@@ -1,332 +1,202 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import Link from "next/link";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowRight, 
-  Play, 
-  CheckCircle, 
-  FileText, 
-  Zap, 
-  Shield, 
-  Sparkles,
-  FileCheck,
-  Database,
-  ArrowDown
-} from "lucide-react";
+import { ArrowRight, CheckCircle, Play, FileText, Sparkles, Shield, Zap } from "lucide-react";
+import Link from "next/link";
+import { ParticleBackground } from "@/components/shared/ParticleBackground";
+import { TiltCard } from "@/components/shared/TiltCard";
+import { AnimatedCounter } from "@/components/shared/AnimatedCounter";
 
-function DocumentStack() {
+function FloatingDocument({ delay = 0, className = "" }: { delay?: number; className?: string }) {
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent" />
-      
-      <div className="absolute inset-0 overflow-hidden">
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-2 rounded-full bg-primary/30 animate-float"
-            style={{
-              left: `${15 + Math.random() * 70}%`,
-              top: `${10 + Math.random() * 80}%`,
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: `${4 + Math.random() * 3}s`,
-            }}
-          />
-        ))}
-      </div>
-      
-      <div className="relative perspective">
-        <div 
-          className="absolute -top-4 -left-4 w-64 h-80 rounded-2xl bg-gradient-to-br from-copper/20 to-copper/5 border border-copper/20 shadow-lg transform rotate-6 animate-float-slow"
-          style={{ animationDelay: "0.5s" }}
-        >
-          <div className="p-4">
-            <div className="w-full h-3 bg-copper/20 rounded mb-2" />
-            <div className="w-3/4 h-3 bg-copper/15 rounded mb-4" />
-            <div className="space-y-2">
-              {[...Array(6)].map((_, i) => (
-                <div key={i} className="w-full h-2 bg-copper/10 rounded" />
-              ))}
-            </div>
-          </div>
+    <div
+      className={`absolute bg-white rounded-xl shadow-xl border border-border/30 p-4 animate-float ${className}`}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      <div className="flex items-center gap-2 mb-3">
+        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+          <FileText className="w-4 h-4 text-primary" />
         </div>
-        
-        <div 
-          className="absolute -top-2 -left-2 w-64 h-80 rounded-2xl bg-gradient-to-br from-muted to-card border border-border/30 shadow-medium transform rotate-3 animate-float-slow"
-          style={{ animationDelay: "0.25s" }}
-        >
-          <div className="p-4">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                <FileText className="w-4 h-4 text-primary" />
-              </div>
-              <div>
-                <div className="w-24 h-2.5 bg-foreground/20 rounded" />
-                <div className="w-16 h-2 bg-muted-foreground/20 rounded mt-1" />
-              </div>
-            </div>
-            <div className="space-y-2">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="flex gap-2">
-                  <div className="w-1/3 h-2 bg-muted-foreground/15 rounded" />
-                  <div className="w-2/3 h-2 bg-muted-foreground/10 rounded" />
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-        
-        <div className="relative w-64 h-80 rounded-2xl bg-card border border-border/50 shadow-elevated animate-float-slow overflow-hidden">
-          <div className="p-4 border-b border-border/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-glow-sm">
-                  <FileCheck className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <p className="font-semibold text-sm">GOTS Certificate</p>
-                  <p className="text-xs text-muted-foreground">Processing...</p>
-                </div>
-              </div>
-              <div className="flex gap-1">
-                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                <div className="w-2 h-2 rounded-full bg-primary/50 animate-pulse" style={{ animationDelay: "0.2s" }} />
-                <div className="w-2 h-2 rounded-full bg-primary/30 animate-pulse" style={{ animationDelay: "0.4s" }} />
-              </div>
-            </div>
-          </div>
-          
-          <div className="p-4 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center">
-                <CheckCircle className="w-4 h-4 text-primary" />
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">Document parsed</span>
-                  <span className="text-primary font-medium">100%</span>
-                </div>
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full w-full bg-primary rounded-full" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-primary/15 flex items-center justify-center">
-                <Zap className="w-4 h-4 text-primary" />
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">Extracting fields</span>
-                  <span className="text-primary font-medium">87%</span>
-                </div>
-                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                  <div className="h-full w-[87%] bg-primary rounded-full animate-pulse" />
-                </div>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-3">
-              <div className="w-7 h-7 rounded-lg bg-muted flex items-center justify-center">
-                <Shield className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <div className="flex-1">
-                <div className="flex justify-between text-xs mb-1">
-                  <span className="text-muted-foreground">Validation</span>
-                  <span className="text-muted-foreground font-medium">Pending</span>
-                </div>
-                <div className="h-1.5 bg-muted rounded-full" />
-              </div>
-            </div>
-          </div>
-          
-          <div className="mx-4 p-3 rounded-xl bg-secondary/50 border border-border/30">
-            <div className="flex items-center gap-2 mb-2">
-              <Database className="w-3 h-3 text-primary" />
-              <span className="text-xs font-medium">Extracted Data</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-2xs font-medium text-primary">14 fields</span>
-            </div>
-            <div className="grid grid-cols-2 gap-1.5">
-              <div className="px-2 py-1 rounded-lg bg-card border border-border/30 text-2xs">Supplier</div>
-              <div className="px-2 py-1 rounded-lg bg-card border border-border/30 text-2xs">Cert ID</div>
-              <div className="px-2 py-1 rounded-lg bg-card border border-border/30 text-2xs">Expiry</div>
-              <div className="px-2 py-1 rounded-lg bg-card border border-primary/20 text-2xs text-primary">+11 more</div>
-            </div>
-          </div>
-          
-          <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent pointer-events-none" />
-        </div>
-        
-        <div className="absolute -right-16 top-8 px-3 py-1.5 rounded-full bg-card shadow-medium border border-primary/20 text-xs font-medium text-primary animate-bounce-subtle">
-          <span className="flex items-center gap-1">
-            <Sparkles className="w-3 h-3" />
-            98.7% Accurate
-          </span>
-        </div>
-        
-        <div className="absolute -left-20 bottom-16 px-3 py-1.5 rounded-full bg-card shadow-medium border border-copper/20 text-xs font-medium animate-bounce-subtle" style={{ animationDelay: "1s" }}>
-          <span className="flex items-center gap-1 text-copper-dark">
-            <Zap className="w-3 h-3 text-copper" />
-            10x Faster
-          </span>
+        <div className="flex-1">
+          <div className="h-2 w-20 bg-muted rounded" />
+          <div className="h-1.5 w-14 bg-muted/50 rounded mt-1" />
         </div>
       </div>
-      
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-[60%] lg:translate-x-[70%] w-56 opacity-80 hidden lg:block">
-        <div className="rounded-xl bg-card border border-border/50 shadow-medium p-4 animate-float-reverse">
-          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border/30">
-            <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center">
-              <Database className="w-3 h-3 text-primary" />
-            </div>
-            <span className="text-xs font-medium">Structured Output</span>
-          </div>
-          <pre className="text-2xs text-muted-foreground font-mono leading-relaxed">
-{`{
-  "supplier": "EcoTex...",
-  "certificate": "GOTS-24",
-  "valid_until": "2025",
-  "materials": [...],
-  "confidence": 0.98
-}`}
-          </pre>
-        </div>
+      <div className="space-y-2">
+        <div className="h-2 w-full bg-muted/60 rounded" />
+        <div className="h-2 w-3/4 bg-muted/40 rounded" />
+        <div className="h-2 w-5/6 bg-muted/60 rounded" />
       </div>
     </div>
   );
 }
 
-function ScrollIndicator() {
+function ProcessingVisual() {
   return (
-    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce-subtle">
-      <span className="text-xs text-muted-foreground font-medium">Scroll to explore</span>
-      <div className="w-6 h-10 rounded-full border-2 border-border flex items-start justify-center p-1">
-        <div className="w-1.5 h-2.5 rounded-full bg-primary animate-bounce" />
+    <TiltCard className="relative">
+      <div className="relative bg-gradient-to-br from-charcoal to-charcoal/90 rounded-2xl p-6 shadow-2xl border border-border/10 overflow-hidden">
+        {/* Glow effects */}
+        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-copper/20 rounded-full blur-3xl" />
+        
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4 relative z-10">
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-red-400" />
+            <div className="w-3 h-3 rounded-full bg-yellow-400" />
+            <div className="w-3 h-3 rounded-full bg-green-400" />
+          </div>
+          <span className="text-xs text-white/40 font-mono">ATESTO Processing</span>
+        </div>
+        
+        {/* Content */}
+        <div className="space-y-4 relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center animate-pulse">
+              <Zap className="w-5 h-5 text-primary" />
+            </div>
+            <div className="flex-1">
+              <div className="text-white/90 text-sm font-medium">Extracting Data...</div>
+              <div className="h-1.5 bg-white/10 rounded-full mt-2 overflow-hidden">
+                <div className="h-full w-3/4 bg-gradient-to-r from-primary to-copper rounded-full animate-shimmer" />
+              </div>
+            </div>
+          </div>
+          
+          {/* Extracted fields */}
+          <div className="space-y-2">
+            {[
+              { label: "Supplier", value: "EcoMaterials GmbH", conf: 98 },
+              { label: "Certificate", value: "GOTS-2024-78456", conf: 99 },
+              { label: "Valid Until", value: "2025-01-14", conf: 95 },
+            ].map((field, i) => (
+              <div
+                key={field.label}
+                className="flex items-center justify-between bg-white/5 rounded-lg px-3 py-2 animate-fade-in-up"
+                style={{ animationDelay: `${i * 200 + 500}ms` }}
+              >
+                <div>
+                  <span className="text-white/40 text-xs">{field.label}</span>
+                  <div className="text-white/90 text-sm">{field.value}</div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="text-xs text-primary">{field.conf}%</span>
+                  <CheckCircle className="w-3.5 h-3.5 text-primary" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+    </TiltCard>
   );
 }
 
 export function Hero() {
-  const [isInView, setIsInView] = useState(false);
-  const heroRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setIsInView(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+  const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
 
   return (
-    <section 
-      ref={heroRef}
-      className="relative min-h-screen flex items-center overflow-hidden pt-20 pattern-noise"
+    <section
+      ref={ref}
+      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-28 bg-background"
     >
-      <div className="absolute inset-0 bg-hero-gradient" />
-      <div className="absolute inset-0 bg-mesh-gradient" />
-      <div className="absolute inset-0 pattern-dots opacity-40" />
+      {/* Particle Background */}
+      <ParticleBackground 
+        particleCount={60} 
+        colors={["rgba(45, 122, 94, 0.3)", "rgba(194, 113, 58, 0.3)", "rgba(139, 154, 125, 0.2)"]}
+        className="z-0"
+      />
       
-      <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl animate-morph" />
-      <div className="absolute bottom-20 right-10 w-96 h-96 bg-copper/5 rounded-full blur-3xl animate-morph" style={{ animationDelay: "4s" }} />
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/30 via-transparent to-transparent -z-10" />
       
+      {/* Decorative blobs */}
+      <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10" />
+      <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-copper/5 rounded-full blur-3xl -z-10" />
+
       <div className="container-custom relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-          <div className="max-w-2xl">
-            <div 
-              className={`mb-6 ${isInView ? 'animate-fade-in-up' : 'opacity-0'}`}
-              style={{ animationDelay: '0ms' }}
-            >
-              <span className="badge-primary">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>AI-Powered Document Intelligence</span>
-              </span>
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left Column - Text */}
+          <div className={`${isInView ? "animate-fade-in-up" : "opacity-0"}`}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">AI-Powered Document Intelligence</span>
             </div>
             
-            <h1 
-              className={`font-serif text-display lg:text-display-lg xl:text-display-xl tracking-tight text-foreground mb-6 ${
-                isInView ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '100ms' }}
-            >
-              Your complete{' '}
-              <span className="text-gradient-primary">document</span>
-              <br />
-              extraction toolkit
+            <h1 className="font-serif text-display-sm md:text-display-md lg:text-display tracking-tight">
+              Transform compliance docs into{" "}
+              <span className="text-gradient-primary">structured data</span>
             </h1>
             
-            <p 
-              className={`text-lg lg:text-xl text-muted-foreground leading-relaxed mb-8 max-w-lg ${
-                isInView ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '200ms' }}
-            >
-              Transform compliance certificates, safety data sheets, and supplier documents into{' '}
-              <span className="text-foreground font-medium">structured, actionable data</span>{' '}
-              in seconds—not hours.
+            <p className="mt-6 text-lg text-muted-foreground max-w-xl">
+              ATESTO uses advanced AI to extract, validate, and organize compliance information 
+              from any document format. Save hours of manual work with 98.7% accuracy.
             </p>
             
-            <div 
-              className={`flex flex-wrap gap-4 mb-10 ${
-                isInView ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '300ms' }}
-            >
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link href="/signup">
-                <Button 
-                  size="lg" 
-                  className="btn-premium h-12 px-8 text-base font-medium group"
-                >
-                  <span>Start Extracting Free</span>
-                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <Button size="lg" className="btn-premium h-14 px-8 text-base group">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="#demo">
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className="btn-secondary-premium h-12 px-6 text-base font-medium group"
-                >
-                  <Play className="mr-2 h-4 w-4 group-hover:scale-110 transition-transform" />
-                  <span>Watch Demo</span>
+                <Button size="lg" variant="outline" className="h-14 px-8 text-base group">
+                  <Play className="mr-2 w-4 h-4" />
+                  Watch Demo
                 </Button>
               </Link>
             </div>
             
-            <div 
-              className={`flex flex-wrap items-center gap-6 text-sm text-muted-foreground ${
-                isInView ? 'animate-fade-in-up' : 'opacity-0'
-              }`}
-              style={{ animationDelay: '400ms' }}
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-primary" />
-                <span>No credit card required</span>
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 mt-10 pt-10 border-t border-border/50">
+              <div>
+                <div className="font-display text-3xl font-bold text-foreground">
+                  <AnimatedCounter end={500} suffix="+" />
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">Companies</p>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-primary" />
-                <span>SOC 2 Compliant</span>
+              <div>
+                <div className="font-display text-3xl font-bold text-foreground">
+                  <AnimatedCounter end={2} suffix="M+" />
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">Documents</p>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle className="h-4 w-4 text-primary" />
-                <span>99.9% Uptime</span>
+              <div>
+                <div className="font-display text-3xl font-bold text-foreground">
+                  <AnimatedCounter end={98} suffix="%" decimals={1} />
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">Accuracy</p>
               </div>
             </div>
           </div>
           
-          <div 
-            className={`relative h-[450px] lg:h-[550px] ${
-              isInView ? 'animate-fade-in-right' : 'opacity-0'
-            }`}
-            style={{ animationDelay: '300ms' }}
+          {/* Right Column - Visual */}
+          <div
+            className={`relative ${isInView ? "animate-fade-in-left" : "opacity-0"}`}
+            style={{ animationDelay: "200ms" }}
           >
-            <DocumentStack />
+            {/* Floating documents */}
+            <FloatingDocument delay={0} className="top-0 left-0 w-40 z-10" />
+            <FloatingDocument delay={500} className="top-20 right-0 w-36 z-10" />
+            <FloatingDocument delay={1000} className="bottom-10 left-10 w-32 z-10" />
+            
+            {/* Main processing card */}
+            <div className="relative z-20 ml-16 mt-16">
+              <ProcessingVisual />
+            </div>
           </div>
         </div>
       </div>
       
-      <ScrollIndicator />
-      
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent" />
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex items-start justify-center p-1">
+          <div className="w-1.5 h-3 bg-muted-foreground/50 rounded-full animate-scroll-indicator" />
+        </div>
+      </div>
     </section>
   );
 }
