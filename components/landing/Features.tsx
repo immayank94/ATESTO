@@ -9,206 +9,323 @@ import {
   Building2,
   Search,
   Lock,
+  Cpu,
+  BarChart3,
+  RefreshCw,
   type LucideIcon,
 } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface Feature {
   icon: LucideIcon;
   title: string;
   description: string;
+  highlight?: string;
 }
 
-const features: Feature[] = [
-  {
-    icon: FileText,
-    title: "Smart Document Recognition",
-    description:
-      "Automatically identifies certificates, safety data sheets, material declarations, and spec sheets from any format.",
-  },
-  {
-    icon: Shield,
-    title: "Compliance Data Extraction",
-    description:
-      "Extracts REACH, RoHS, materials composition, certifications (FSC, ISO, GOTS), and hazardous substance declarations.",
-  },
-  {
-    icon: Eye,
-    title: "Confidence Scoring",
-    description:
-      "Each extracted field shows a confidence score so you know what needs review vs. what's accurate.",
-  },
-  {
-    icon: Zap,
-    title: "Lightning Fast",
-    description:
-      "Process a document in 10-30 seconds. What took 20 minutes of copy-pasting now takes seconds.",
-  },
-  {
-    icon: Download,
-    title: "Flexible Export",
-    description:
-      "Export extracted data as JSON or CSV. Import directly into your compliance management system or ERP.",
-  },
-];
-
-const advancedFeatures: Feature[] = [
-  {
-    icon: Building2,
-    title: "Supplier Database",
-    description:
-      "Build a searchable database of supplier compliance data. Find documents by supplier, material, or certificate type.",
-  },
-  {
-    icon: Search,
-    title: "Intelligent Search",
-    description:
-      "Search across all your extracted data. Find any certification, material, or supplier in seconds.",
-  },
-  {
-    icon: Lock,
-    title: "Enterprise Security",
-    description:
-      "SOC 2 compliant infrastructure. Your data is encrypted at rest and in transit. GDPR ready.",
-  },
-];
-
-function FeatureCard({ feature, large = false }: { feature: Feature; large?: boolean }) {
+// Bento Card Component with different styles
+function BentoCard({
+  feature,
+  variant = "default",
+  className = "",
+  index = 0,
+  isInView = false,
+}: {
+  feature: Feature;
+  variant?: "default" | "large" | "highlight" | "dark";
+  className?: string;
+  index?: number;
+  isInView?: boolean;
+}) {
   const IconComponent = feature.icon;
 
+  const baseClasses =
+    "group relative rounded-2xl border transition-all duration-500 overflow-hidden card-shine";
+  const variantClasses = {
+    default:
+      "p-6 bg-white border-border/50 hover:border-primary/30 hover:shadow-medium",
+    large:
+      "p-8 bg-white border-border/50 hover:border-primary/30 hover:shadow-large",
+    highlight:
+      "p-8 bg-gradient-to-br from-primary/5 via-white to-white border-primary/20 hover:border-primary/40 hover:shadow-glow",
+    dark:
+      "p-8 bg-foreground text-background border-foreground hover:shadow-elevated",
+  };
+
   return (
-    <div className={`group relative ${large ? 'p-8' : 'p-6'} rounded-2xl border border-border/50 bg-card/50 hover:bg-card hover:border-primary/30 transition-all duration-300`}>
-      <div className={`flex ${large ? 'h-14 w-14' : 'h-12 w-12'} items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors ${large ? 'mb-6' : 'mb-4'}`}>
-        <IconComponent className={`${large ? 'h-7 w-7' : 'h-6 w-6'} text-primary`} />
+    <div
+      className={`${baseClasses} ${variantClasses[variant]} ${className} ${
+        isInView ? "animate-fade-in-up" : "opacity-0"
+      }`}
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
+      {/* Icon */}
+      <div
+        className={`flex h-12 w-12 items-center justify-center rounded-xl mb-5 transition-all duration-300 ${
+          variant === "dark"
+            ? "bg-background/10 group-hover:bg-background/20"
+            : "bg-primary/10 group-hover:bg-primary/15 group-hover:scale-110"
+        }`}
+      >
+        <IconComponent
+          className={`h-6 w-6 ${
+            variant === "dark" ? "text-background" : "text-primary"
+          }`}
+        />
       </div>
-      <h3 className={`${large ? 'text-xl' : 'text-lg'} font-semibold text-foreground ${large ? 'mb-3' : 'mb-2'}`}>
+
+      {/* Content */}
+      <h3
+        className={`text-lg font-semibold mb-2 font-display ${
+          variant === "dark" ? "text-background" : "text-foreground"
+        }`}
+      >
         {feature.title}
       </h3>
-      <p className={`${large ? '' : 'text-sm'} text-muted-foreground leading-relaxed`}>
+      <p
+        className={`text-sm leading-relaxed ${
+          variant === "dark" ? "text-background/70" : "text-muted-foreground"
+        }`}
+      >
         {feature.description}
       </p>
+
+      {/* Highlight badge */}
+      {feature.highlight && (
+        <div className="mt-4 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+          <span className="text-xs font-medium text-primary">
+            {feature.highlight}
+          </span>
+        </div>
+      )}
+
+      {/* Hover gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+    </div>
+  );
+}
+
+// Visual Demo Card for the bento grid
+function VisualDemoCard({
+  isInView,
+  index,
+}: {
+  isInView: boolean;
+  index: number;
+}) {
+  return (
+    <div
+      className={`group relative rounded-2xl border border-border/50 bg-gradient-to-br from-secondary/50 to-white p-6 overflow-hidden hover:shadow-large transition-all duration-500 ${
+        isInView ? "animate-fade-in-up" : "opacity-0"
+      }`}
+      style={{ animationDelay: `${index * 100}ms` }}
+    >
+      {/* Mock interface */}
+      <div className="space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+            <FileText className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <p className="text-sm font-medium">Certificate_GOTS.pdf</p>
+            <p className="text-xs text-muted-foreground">Processing...</p>
+          </div>
+        </div>
+
+        {/* Progress bars */}
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs mb-1">
+            <span className="text-muted-foreground">Parsing document</span>
+            <span className="text-primary font-medium">Complete</span>
+          </div>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <div className="h-full w-full bg-primary rounded-full" />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex justify-between text-xs mb-1">
+            <span className="text-muted-foreground">Extracting fields</span>
+            <span className="text-primary font-medium">12 found</span>
+          </div>
+          <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+            <div className="h-full w-4/5 bg-primary rounded-full animate-pulse" />
+          </div>
+        </div>
+
+        {/* Extracted data preview */}
+        <div className="p-3 rounded-lg bg-white border border-border/50 mt-4">
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div>
+              <span className="text-muted-foreground">Supplier</span>
+              <p className="font-medium">EcoTextiles GmbH</p>
+            </div>
+            <div>
+              <span className="text-muted-foreground">Certificate</span>
+              <p className="font-medium text-primary">GOTS-2024-78456</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Floating accent */}
+      <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full bg-primary/5 blur-2xl group-hover:bg-primary/10 transition-colors" />
     </div>
   );
 }
 
 export function Features() {
-  const FirstIcon = features[0].icon;
-  const SecondIcon = features[1].icon;
+  const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
+
+  const mainFeatures: Feature[] = [
+    {
+      icon: Eye,
+      title: "State-of-the-art vision models",
+      description:
+        "Our vision models are built specifically for your most complex documents, handling everything from invoices to safety datasheets with incredible accuracy.",
+    },
+    {
+      icon: Cpu,
+      title: "Agents that optimize performance",
+      description:
+        "Our agents learn from your documents, run experiments, and automatically optimize your schemas to ensure the highest accuracy.",
+      highlight: "AI-Powered",
+    },
+    {
+      icon: Zap,
+      title: "Flexible API Toolkit",
+      description:
+        "Extend's suite of APIs can enable you to build incredible products with document parsing, classification, extraction, and splitting capabilities.",
+    },
+    {
+      icon: RefreshCw,
+      title: "Continuous learning",
+      description:
+        "Models improve in-session by learning from each document to improve accuracy on similar ones. Every correction makes us better.",
+    },
+    {
+      icon: BarChart3,
+      title: "Build trust with evals",
+      description:
+        "Track your accuracy in real-time with our integrated evaluation suite so you can ship with confidence.",
+    },
+  ];
+
+  const enterpriseFeatures: Feature[] = [
+    {
+      icon: Building2,
+      title: "Supplier Database",
+      description:
+        "Build a searchable database of all your supplier compliance data. Find any document instantly.",
+    },
+    {
+      icon: Search,
+      title: "Intelligent Search",
+      description:
+        "Search across all extracted data. Find certifications, materials, or suppliers in seconds.",
+    },
+    {
+      icon: Lock,
+      title: "Enterprise Security",
+      description:
+        "SOC 2 compliant infrastructure. Your data is encrypted at rest and in transit.",
+    },
+  ];
 
   return (
-    <section id="features" className="py-24 lg:py-32">
+    <section id="features" ref={ref} className="py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
-            Everything you need for
-            <span className="text-gradient-primary"> compliance extraction</span>
+        <div
+          className={`text-center max-w-3xl mx-auto mb-16 ${
+            isInView ? "animate-fade-in-up" : "opacity-0"
+          }`}
+        >
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+            All-in-one{" "}
+            <span className="text-gradient-primary">document processing</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Purpose-built for compliance teams. Extract, organize, and export supplier
-            compliance data with enterprise-grade accuracy.
+            Enterprise-grade extraction with everything you need to create,
+            evaluate, and optimize your most complex use cases.
           </p>
         </div>
 
-        {/* Main features - 2 column layout with highlight */}
-        <div className="grid lg:grid-cols-5 gap-8 mb-12">
-          {/* Feature 1 - Large */}
-          <div className="lg:col-span-2 group relative p-8 rounded-2xl border border-border/50 bg-card/50 hover:bg-card hover:border-primary/30 transition-all duration-300">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors mb-6">
-              <FirstIcon className="h-7 w-7 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              {features[0].title}
-            </h3>
-            <p className="text-muted-foreground leading-relaxed">
-              {features[0].description}
-            </p>
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* First row - 2 large + 1 visual */}
+          <BentoCard
+            feature={mainFeatures[0]}
+            variant="large"
+            className="lg:col-span-1"
+            index={0}
+            isInView={isInView}
+          />
+          <BentoCard
+            feature={mainFeatures[1]}
+            variant="highlight"
+            className="lg:col-span-1"
+            index={1}
+            isInView={isInView}
+          />
+          <VisualDemoCard isInView={isInView} index={2} />
 
-            {/* Feature preview mockup */}
-            <div className="mt-6 p-4 rounded-lg bg-secondary/30 border border-border/30">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-xs font-medium text-primary">Auto-detected</span>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground w-20">Type:</span>
-                  <span className="text-xs font-medium px-2 py-0.5 rounded bg-primary/20 text-primary">GOTS Certificate</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground w-20">Format:</span>
-                  <span className="text-xs font-medium">PDF Document</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Feature 2 - Large */}
-          <div className="lg:col-span-3 group relative p-8 rounded-2xl border border-border/50 bg-card/50 hover:bg-card hover:border-primary/30 transition-all duration-300">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 group-hover:bg-primary/20 transition-colors mb-6">
-              <SecondIcon className="h-7 w-7 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground mb-3">
-              {features[1].title}
-            </h3>
-            <p className="text-muted-foreground leading-relaxed mb-6">
-              {features[1].description}
-            </p>
-
-            {/* Compliance badges mockup */}
-            <div className="flex flex-wrap gap-2">
-              {["REACH", "RoHS", "GOTS", "FSC", "ISO 14001", "OEKO-TEX"].map((cert) => (
-                <span
-                  key={cert}
-                  className="px-3 py-1.5 rounded-lg bg-secondary border border-border/50 text-xs font-medium"
-                >
-                  {cert}
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Second row - 3 regular */}
+          <BentoCard
+            feature={mainFeatures[2]}
+            variant="default"
+            index={3}
+            isInView={isInView}
+          />
+          <BentoCard
+            feature={mainFeatures[3]}
+            variant="default"
+            index={4}
+            isInView={isInView}
+          />
+          <BentoCard
+            feature={mainFeatures[4]}
+            variant="default"
+            index={5}
+            isInView={isInView}
+          />
         </div>
 
-        {/* Secondary features - 3 column grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-16">
-          {features.slice(2).map((feature) => {
-            const IconComp = feature.icon;
-            return (
-              <div
-                key={feature.title}
-                className="group relative p-6 rounded-xl border border-border/50 bg-card/30 hover:bg-card/50 hover:border-primary/20 transition-all duration-300"
-              >
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors mb-4">
-                  <IconComp className="h-6 w-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-semibold text-foreground mb-2">
-                  {feature.title}
-                </h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Advanced features banner */}
-        <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card p-8 lg:p-12">
+        {/* Enterprise features banner */}
+        <div
+          className={`mt-16 rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/5 via-background to-background p-8 lg:p-12 ${
+            isInView ? "animate-fade-in-up" : "opacity-0"
+          }`}
+          style={{ animationDelay: "600ms" }}
+        >
           <div className="text-center mb-10">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-xs font-medium text-primary mb-4">
+            <span className="badge-primary text-sm font-medium mb-4">
               Enterprise Features
             </span>
-            <h3 className="text-2xl font-bold">Built for scale and security</h3>
+            <h3 className="text-2xl lg:text-3xl font-bold font-display mt-4">
+              Built for scale and security
+            </h3>
+            <p className="text-muted-foreground mt-2 max-w-xl mx-auto">
+              Everything you need to deploy document processing at enterprise scale.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {advancedFeatures.map((feature) => {
+            {enterpriseFeatures.map((feature, index) => {
               const IconComp = feature.icon;
               return (
-                <div key={feature.title} className="text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary/10 mx-auto mb-4">
+                <div
+                  key={feature.title}
+                  className={`text-center group ${
+                    isInView ? "animate-fade-in-up" : "opacity-0"
+                  }`}
+                  style={{ animationDelay: `${700 + index * 100}ms` }}
+                >
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 mx-auto mb-4 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
                     <IconComp className="h-7 w-7 text-primary" />
                   </div>
-                  <h4 className="font-semibold text-foreground mb-2">
+                  <h4 className="font-semibold text-foreground mb-2 font-display">
                     {feature.title}
                   </h4>
                   <p className="text-sm text-muted-foreground">
