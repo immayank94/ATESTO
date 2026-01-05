@@ -1,25 +1,24 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FileCheck, Menu, X, ArrowRight, ChevronDown } from "lucide-react";
-import { useState, useEffect } from "react";
+import { FileCheck, ArrowRight } from "lucide-react";
 
 interface NavbarProps {
   isAuthenticated?: boolean;
   onSignOut?: () => void;
 }
 
-export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export function Navbar({ isAuthenticated = false, onSignOut }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-
-      // Determine active section based on scroll position
+      
       const sections = ["process", "features", "pricing"];
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -27,11 +26,10 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
           const rect = element.getBoundingClientRect();
           if (rect.top <= 100 && rect.bottom >= 100) {
             setActiveSection(section);
-            return;
+            break;
           }
         }
       }
-      setActiveSection("");
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -48,29 +46,31 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? "py-2 glass-strong border-b border-border/30 shadow-soft"
-          : "py-4 bg-transparent"
+          ? "py-3 glass-strong border-b border-border/40 shadow-soft"
+          : "py-5 bg-transparent"
       }`}
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-14 items-center justify-between">
-          {/* Logo */}
+      <div className="container-custom">
+        <div className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 ${
-              scrolled
-                ? "bg-primary shadow-glow-sm"
-                : "bg-primary/10 group-hover:bg-primary/20"
-            }`}>
-              <FileCheck className={`h-5 w-5 transition-colors ${
-                scrolled ? "text-white" : "text-primary"
-              }`} />
+            <div 
+              className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 ${
+                scrolled
+                  ? "bg-primary shadow-glow-sm"
+                  : "bg-primary/10 group-hover:bg-primary/20"
+              }`}
+            >
+              <FileCheck 
+                className={`h-5 w-5 transition-colors ${
+                  scrolled ? "text-white" : "text-primary"
+                }`} 
+              />
             </div>
             <span className="text-xl font-bold text-foreground tracking-tight font-display">
               ATESTO
             </span>
           </Link>
 
-          {/* Desktop navigation */}
           <div className="hidden md:flex md:items-center md:gap-1">
             {!isAuthenticated &&
               navLinks.map((link) => (
@@ -84,7 +84,6 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
                   }`}
                 >
                   {link.label}
-                  {/* Active indicator */}
                   <span
                     className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-primary rounded-full transition-all duration-300 ${
                       activeSection === link.id ? "w-6" : "w-0 group-hover:w-4"
@@ -94,7 +93,6 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
               ))}
           </div>
 
-          {/* Desktop CTA */}
           <div className="hidden md:flex md:items-center md:gap-3">
             {isAuthenticated ? (
               <>
@@ -122,7 +120,7 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground font-medium"
                   >
                     Log In
                   </Button>
@@ -130,7 +128,7 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
                 <Link href="/signup">
                   <Button
                     size="sm"
-                    className="btn-primary-enhanced group px-5 shadow-glow-sm hover:shadow-glow transition-shadow"
+                    className="btn-premium px-5 group"
                   >
                     <span>Get Started</span>
                     <ArrowRight className="ml-1.5 h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
@@ -140,7 +138,6 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
             )}
           </div>
 
-          {/* Mobile menu button */}
           <button
             type="button"
             className="md:hidden p-2.5 rounded-xl hover:bg-secondary/50 transition-colors"
@@ -167,15 +164,14 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
           </button>
         </div>
 
-        {/* Mobile menu */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-400 ease-smooth ${
             mobileMenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="py-4 space-y-1 border-t border-border/30 mt-2">
+          <div className="py-4 space-y-1 border-t border-border/30 mt-4">
             {!isAuthenticated &&
-              navLinks.map((link, index) => (
+              navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
@@ -185,7 +181,6 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
                       : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
-                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   {link.label}
                 </Link>
@@ -236,7 +231,7 @@ export function Navbar({ isAuthenticated, onSignOut }: NavbarProps) {
                     onClick={() => setMobileMenuOpen(false)}
                     className="block"
                   >
-                    <Button className="w-full btn-primary-enhanced shadow-glow">
+                    <Button className="w-full btn-premium">
                       Get Started
                       <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                     </Button>
