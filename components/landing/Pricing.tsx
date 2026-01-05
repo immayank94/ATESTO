@@ -12,7 +12,7 @@ const plans = [
     period: "forever",
     description: "Perfect for trying out ATESTO",
     features: [
-      "10 document extractions/month",
+      "20 documents/month",
       "All document types supported",
       "JSON & CSV export",
       "7-day history",
@@ -24,11 +24,11 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$79",
+    price: "$19",
     period: "per month",
     description: "For growing compliance teams",
     features: [
-      "200 document extractions/month",
+      "500 documents/month",
       "All document types supported",
       "JSON & CSV export",
       "Unlimited history",
@@ -47,11 +47,11 @@ const plans = [
     period: "per month",
     description: "For large organizations",
     features: [
+      "Everything in Pro",
       "Unlimited extractions",
       "Custom integrations",
       "SSO & SAML",
       "Dedicated support",
-      "Custom data fields",
       "On-premise option",
       "SLA guarantee",
       "Volume discounts",
