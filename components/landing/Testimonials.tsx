@@ -1,100 +1,38 @@
 "use client";
 
-import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Star, Quote } from "lucide-react";
-import { TiltCard } from "@/components/shared/TiltCard";
-
-const testimonials = [
-  {
-    quote: "ATESTO reduced our compliance processing time from 3 days to under 2 hours. The accuracy is remarkable.",
-    author: "Sarah Chen",
-    role: "Head of Compliance",
-    company: "EcoFashion Group",
-    avatar: "SC",
-    rating: 5,
-  },
-  {
-    quote: "Finally, a tool that understands complex certification documents. Our team can now focus on strategy instead of data entry.",
-    author: "Marcus Weber",
-    role: "Supply Chain Director",
-    company: "GreenTech Industries",
-    avatar: "MW",
-    rating: 5,
-  },
-  {
-    quote: "The API integration was seamless. We process thousands of supplier documents automatically now.",
-    author: "Priya Sharma",
-    role: "CTO",
-    company: "TraceOrigin",
-    avatar: "PS",
-    rating: 5,
-  },
+const testimonialData = [
+  { quote: "ATESTO reduced our compliance processing time by 90%. We can now focus on strategic work.", name: "Sarah Chen", title: "Head of Compliance", company: "EcoFashion" },
+  { quote: "The accuracy is remarkable. We catch more issues now than we did with manual review.", name: "Marcus Weber", title: "Supply Chain Director", company: "GreenTech" },
+  { quote: "Easy integration with our existing systems. The API is well documented.", name: "Priya Sharma", title: "CTO", company: "TraceOrigin" },
+  { quote: "Our team loves it. They can process 10x more documents without burnout.", name: "David Kim", title: "Operations Manager", company: "MaterialsPlus" },
+  { quote: "The learning feature means it gets better every week. Incredible ROI.", name: "Emma Johnson", title: "Compliance Lead", company: "SafeSupply" },
+  { quote: "We went from 3 days to process a batch to under 2 hours.", name: "Thomas Muller", title: "QA Director", company: "CertifyNow" },
 ];
 
 export function Testimonials() {
-  const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
-
   return (
-    <section id="testimonials" ref={ref} className="section-padding bg-secondary/20">
-      <div className="container-custom">
-        <div
-          className={`text-center max-w-3xl mx-auto mb-16 ${
-            isInView ? "animate-fade-in-up" : "opacity-0"
-          }`}
-        >
-          <span className="badge-primary mb-4">
-            <Star className="w-3.5 h-3.5 fill-current" />
-            Testimonials
-          </span>
-          <h2 className="font-serif text-display-sm lg:text-display tracking-tight mt-4">
-            Trusted by compliance{" "}
-            <span className="text-gradient-primary">leaders</span>
-          </h2>
-          <p className="text-muted-foreground mt-4 max-w-lg mx-auto">
-            See why leading companies choose ATESTO for their document intelligence needs.
-          </p>
+    <section id="testimonials" className="section-g">
+      <div className="container-g">
+        <div className="text-center mb-12">
+          <span className="section-label">[ TESTIMONIALS ]</span>
+          <h2 className="font-serif text-4xl md:text-5xl tracking-tight">From Compliance Teams That Use ATESTO</h2>
+          <p className="mt-4 text-[#666]">See what compliance managers are saying</p>
         </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
-          {testimonials.map((testimonial, index) => (
-            <TiltCard
-              key={testimonial.author}
-              className={`${isInView ? "animate-fade-in-up" : "opacity-0"}`}
-              tiltAmount={5}
-            >
-              <div
-                className="h-full card-premium p-6 lg:p-8 flex flex-col"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {/* Rating */}
-                <div className="flex gap-1 mb-4">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-500 fill-current" />
-                  ))}
+        
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {testimonialData.map((t, i) => (
+            <div key={i} className="card-g">
+              <p className="text-[#1a1a1a] mb-6">&ldquo;{t.quote}&rdquo;</p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2d5a3d] flex items-center justify-center text-white font-semibold text-sm">
+                  {t.name.split(' ').map(n => n[0]).join('')}
                 </div>
-
-                {/* Quote */}
-                <div className="relative flex-1">
-                  <Quote className="absolute -top-2 -left-2 w-8 h-8 text-primary/10" />
-                  <p className="text-foreground/90 relative z-10 italic">
-                    {testimonial.quote}
-                  </p>
-                </div>
-
-                {/* Author */}
-                <div className="flex items-center gap-3 mt-6 pt-6 border-t border-border/50">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center text-white font-semibold">
-                    {testimonial.avatar}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">{testimonial.author}</p>
-                    <p className="text-sm text-muted-foreground">
-                      {testimonial.role}, {testimonial.company}
-                    </p>
-                  </div>
+                <div>
+                  <div className="font-semibold text-sm">{t.name}</div>
+                  <div className="text-xs text-[#666]">{t.title}, {t.company}</div>
                 </div>
               </div>
-            </TiltCard>
+            </div>
           ))}
         </div>
       </div>
