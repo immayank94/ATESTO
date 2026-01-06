@@ -2,245 +2,168 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { FileCheck, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { Button } from "../ui/button";
+import { Menu, X, LogIn, LayoutDashboard, LogOut, ChevronDown } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-interface NavbarProps {
-  isAuthenticated?: boolean;
-  onSignOut?: () => void;
-}
+const navLinks = [
+  { href: "#features", label: "Features" },
+  { href: "#demo", label: "Demo" },
+  { href: "#pricing", label: "Pricing" },
+  { href: "#faq", label: "FAQ" },
+];
 
-export function Navbar({ isAuthenticated = false, onSignOut }: NavbarProps) {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+export function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-      
-      const sections = ["process", "features", "pricing"];
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          if (rect.top <= 100 && rect.bottom >= 100) {
-            setActiveSection(section);
-            break;
-          }
-        }
-      }
+      setIsScrolled(window.scrollY > 20);
     };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { href: "/#process", label: "How it Works", id: "process" },
-    { href: "/#features", label: "Features", id: "features" },
-    { href: "/#pricing", label: "Pricing", id: "pricing" },
-  ];
-
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "py-3 glass-strong border-b border-border/40 shadow-soft"
-          : "py-5 bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-background/95 backdrop-blur-md border-b border-border/50 shadow-sm"
+          : "bg-transparent"
       }`}
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div 
-              className={`flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-300 ${
-                scrolled
-                  ? "bg-primary shadow-glow-sm"
-                  : "bg-primary/10 group-hover:bg-primary/20"
-              }`}
-            >
-              <FileCheck 
-                className={`h-5 w-5 transition-colors ${
-                  scrolled ? "text-white" : "text-primary"
-                }`} 
-              />
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                className="w-5 h-5 text-primary"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path d="M9 12l2 2 4-4" />
+                <path d="M12 3c7.2 0 9 1.8 9 9s-1.8 9-9 9-9-1.8-9-9 1.8-9 9-9z" />
+              </svg>
             </div>
-            <span className="text-xl font-bold text-foreground tracking-tight font-display">
+            <span className="font-display text-xl font-semibold tracking-tight">
               ATESTO
             </span>
           </Link>
 
-          <div className="hidden md:flex md:items-center md:gap-1">
-            {!isAuthenticated &&
-              navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`relative px-4 py-2 text-sm font-medium transition-all duration-300 rounded-lg group ${
-                    activeSection === link.id
-                      ? "text-primary"
-                      : "text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {link.label}
-                  <span
-                    className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-primary rounded-full transition-all duration-300 ${
-                      activeSection === link.id ? "w-6" : "w-0 group-hover:w-4"
-                    }`}
-                  />
-                </Link>
-              ))}
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="px-4 py-2 text-sm text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-secondary/50"
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
 
-          <div className="hidden md:flex md:items-center md:gap-3">
-            {isAuthenticated ? (
+          {/* Desktop Auth */}
+          <div className="hidden lg:flex items-center gap-3">
+            {user ? (
               <>
                 <Link href="/dashboard">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-foreground"
-                  >
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <LayoutDashboard className="w-4 h-4" />
                     Dashboard
                   </Button>
                 </Link>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={onSignOut}
-                  className="border-border/50 hover:bg-secondary/50"
+                  onClick={() => signOut()}
+                  className="gap-2"
                 >
+                  <LogOut className="w-4 h-4" />
                   Sign Out
                 </Button>
               </>
             ) : (
               <>
                 <Link href="/login">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-muted-foreground hover:text-foreground font-medium"
-                  >
-                    Log In
+                  <Button variant="ghost" size="sm">
+                    Sign In
                   </Button>
                 </Link>
                 <Link href="/signup">
-                  <Button
-                    size="sm"
-                    className="btn-premium px-5 group"
-                  >
-                    <span>Get Started</span>
-                    <ArrowRight className="ml-1.5 h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
+                  <Button size="sm" className="btn-premium">
+                    Start Now
                   </Button>
                 </Link>
               </>
             )}
           </div>
 
+          {/* Mobile Menu Button */}
           <button
-            type="button"
-            className="md:hidden p-2.5 rounded-xl hover:bg-secondary/50 transition-colors"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle menu"
+            className="lg:hidden p-2 rounded-lg hover:bg-secondary/50 transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            <div className="relative w-5 h-5">
-              <span
-                className={`absolute block h-0.5 w-5 bg-foreground rounded transition-all duration-300 ${
-                  mobileMenuOpen ? "top-2 rotate-45" : "top-0.5"
-                }`}
-              />
-              <span
-                className={`absolute block h-0.5 w-5 bg-foreground rounded top-2 transition-all duration-300 ${
-                  mobileMenuOpen ? "opacity-0 scale-0" : "opacity-100 scale-100"
-                }`}
-              />
-              <span
-                className={`absolute block h-0.5 w-5 bg-foreground rounded transition-all duration-300 ${
-                  mobileMenuOpen ? "top-2 -rotate-45" : "top-3.5"
-                }`}
-              />
-            </div>
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
 
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-400 ease-smooth ${
-            mobileMenuOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="py-4 space-y-1 border-t border-border/30 mt-4">
-            {!isAuthenticated &&
-              navLinks.map((link) => (
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="lg:hidden py-4 border-t border-border/50 animate-fade-in-up">
+            <div className="flex flex-col gap-2">
+              {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`block px-4 py-3 text-sm font-medium rounded-xl transition-all duration-300 ${
-                    activeSection === link.id
-                      ? "text-primary bg-primary/5"
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
-                  }`}
-                  onClick={() => setMobileMenuOpen(false)}
+                  className="px-4 py-3 text-sm hover:bg-secondary/50 rounded-lg transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
               ))}
-
-            <div className="pt-4 space-y-2 px-4">
-              {isAuthenticated ? (
-                <>
-                  <Link
-                    href="/dashboard"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block"
-                  >
+              <div className="pt-4 mt-2 border-t border-border/50 flex flex-col gap-2">
+                {user ? (
+                  <>
+                    <Link href="/dashboard">
+                      <Button variant="outline" className="w-full justify-start gap-2">
+                        <LayoutDashboard className="w-4 h-4" />
+                        Dashboard
+                      </Button>
+                    </Link>
                     <Button
                       variant="ghost"
-                      className="w-full justify-start text-muted-foreground"
+                      onClick={() => signOut()}
+                      className="w-full justify-start gap-2"
                     >
-                      Dashboard
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
                     </Button>
-                  </Link>
-                  <Button
-                    variant="outline"
-                    className="w-full border-border/50"
-                    onClick={() => {
-                      onSignOut?.();
-                      setMobileMenuOpen(false);
-                    }}
-                  >
-                    Sign Out
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block"
-                  >
-                    <Button
-                      variant="outline"
-                      className="w-full border-border/50 text-muted-foreground"
-                    >
-                      Log In
-                    </Button>
-                  </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block"
-                  >
-                    <Button className="w-full btn-premium">
-                      Get Started
-                      <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-                    </Button>
-                  </Link>
-                </>
-              )}
+                  </>
+                ) : (
+                  <>
+                    <Link href="/login">
+                      <Button variant="outline" className="w-full">Sign In</Button>
+                    </Link>
+                    <Link href="/signup">
+                      <Button className="w-full btn-premium">Start Now</Button>
+                    </Link>
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </nav>
   );
