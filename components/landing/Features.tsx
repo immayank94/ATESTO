@@ -75,7 +75,7 @@ function FeatureVisual({ type }: { type: string }) {
             <div className="p-3 bg-white/80 rounded-lg shadow-sm">
               <div className="text-xs text-muted-foreground mb-2">Custom Rule:</div>
               <div className="text-sm font-mono text-foreground/80">
-                "All certificates must have<br />valid expiry dates within<br />12 months"
+                All certificates must have<br />valid expiry dates within<br />12 months
               </div>
             </div>
             <div className="flex gap-2">
