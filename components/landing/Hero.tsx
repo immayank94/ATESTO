@@ -64,63 +64,62 @@ export function Hero() {
         </div>
       </div>
       
-      {/* Octopus - RIGHT side, mostly off-screen, BEHIND text */}
+      {/* Octopus - MORE VISIBLE (70-80%), right -50px */}
       <div 
         className="absolute top-1/2 z-0 hidden lg:block pointer-events-none"
         style={{
-          right: '-180px',
-          transform: `translateY(-50%) translate(${mousePos.x}px, ${mousePos.y}px)`,
+          right: '-50px',
+          transform: `translateY(-50%) translateX(8%) translate(${mousePos.x}px, ${mousePos.y}px)`,
           transition: 'transform 0.4s ease-out',
-          width: '750px',
+          width: '700px',
         }}
       >
         {/* Floating document icon */}
         <div 
           className="absolute z-10"
-          style={{ top: '15%', left: '10%', animation: 'buzz 8s ease-in-out infinite' }}
+          style={{ top: '12%', left: '15%', animation: 'buzz 8s ease-in-out infinite' }}
         >
           <div className="w-6 h-7 border border-[#1a1a1a]/30 rounded-sm flex items-center justify-center bg-[#f5f5f0]">
             <FileText className="w-3 h-3 text-[#1a1a1a]/40" />
           </div>
         </div>
 
-        {/* Octopus image with halftone effect */}
-        <div className="relative">
-          <img
-            src="/images/octopus-hero.png"
-            alt=""
-            className="w-full h-auto"
-            style={{
-              filter: 'grayscale(100%) contrast(1.1)',
-              mixBlendMode: 'multiply',
-              opacity: 0.65,
-            }}
-          />
-          {/* Halftone dot overlay */}
-          <div 
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(0,0,0,0.35) 1px, transparent 1px)',
-              backgroundSize: '3px 3px',
-              mixBlendMode: 'multiply',
-            }}
-          />
-        </div>
+        {/* Octopus image - NO WHITE BOX */}
+        <img
+          src="/images/octopus-hero.png"
+          alt=""
+          className="w-full h-auto"
+          style={{
+            filter: 'grayscale(100%) contrast(0.9)',
+            mixBlendMode: 'multiply',
+            opacity: 0.55,
+          }}
+        />
+        
+        {/* Halftone dot overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(0,0,0,0.3) 1px, transparent 1px)',
+            backgroundSize: '3px 3px',
+            mixBlendMode: 'multiply',
+          }}
+        />
       </div>
 
-      {/* Tablet: smaller, more faded */}
+      {/* Tablet view */}
       <div 
-        className="absolute right-[-100px] top-1/2 -translate-y-1/2 z-0 hidden md:block lg:hidden pointer-events-none"
-        style={{ width: '450px' }}
+        className="absolute right-[-30px] top-1/2 -translate-y-1/2 z-0 hidden md:block lg:hidden pointer-events-none"
+        style={{ width: '400px' }}
       >
         <img
           src="/images/octopus-hero.png"
           alt=""
           className="w-full h-auto"
           style={{
-            filter: 'grayscale(100%) contrast(1.05)',
+            filter: 'grayscale(100%) contrast(0.9)',
             mixBlendMode: 'multiply',
-            opacity: 0.4,
+            opacity: 0.45,
           }}
         />
       </div>
