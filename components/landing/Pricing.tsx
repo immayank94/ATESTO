@@ -66,7 +66,7 @@ export function Pricing() {
   const { ref, isInView } = useScrollAnimation({ threshold: 0.1 });
 
   return (
-    <section className="section-spacing" id="pricing" ref={ref} className="py-24 lg:py-32">
+    <section className="section-spacing py-24 lg:py-32" id="pricing" ref={ref} >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Section header */}
         <div

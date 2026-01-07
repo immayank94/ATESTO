@@ -17,7 +17,7 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="section-spacing bg-section-alt" id="faq" className="section-g">
+    <section className="section-spacing bg-section-alt" id="faq">
       <div className="container-g max-w-3xl">
         <div className="text-center mb-12">
           <span className="section-label">[ FAQ ]</span>

@@ -11,7 +11,7 @@ const features = [
 
 export function FeatureSection() {
   return (
-    <section className="section-spacing" id="features" className="section-g">
+    <section className="section-spacing section-g" id="features" >
       <div className="container-g">
         <div className="max-w-2xl mb-16">
           <span className="section-label">[ SHIP FASTER ]</span>
