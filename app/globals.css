@@ -8,6 +8,7 @@
   --primary: #2d5a3d;
   --primary-dark: #234a31;
   --secondary: #f8f9fa;
+  --accent-light: #f0f7f4;
   --muted: #6b7280;
   --border: #e5e7eb;
   --card: #ffffff;
@@ -107,4 +108,42 @@ body {
 
 ::selection {
   background: rgba(45, 90, 61, 0.2);
+}
+
+
+/* ========================================
+   SECTION SPACING
+   ======================================== */
+
+.section-spacing {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+.section-heading {
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .section-heading {
+    margin-bottom: 4rem;
+  }
+}
+
+/* Hero specific */
+.hero-section {
+  padding-bottom: 5rem;
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding-bottom: 6rem;
+  }
 }

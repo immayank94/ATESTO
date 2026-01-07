@@ -6,7 +6,7 @@ import { HeroAnimation } from "./HeroAnimation";
 
 export function Hero() {
   return (
-    <section className="relative pt-20 lg:pt-28 pb-16 lg:pb-24 overflow-hidden bg-white">
+    <section className="hero-section relative pt-24 lg:pt-32 pb-20 lg:pb-28 overflow-hidden bg-white">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white pointer-events-none" />
       
       <div className="container-g relative z-10">

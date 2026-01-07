@@ -1,5 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import { FileText, CheckCircle2 } from "lucide-react";
 import { useState, useEffect } from "react";
 
@@ -12,7 +12,7 @@ const dataFields = [
   { label: "REACH Status", value: "Compliant" },
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -20,13 +20,13 @@ const containerVariants = {
   }
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, x: 30, scale: 0.95 },
   show: { 
     opacity: 1, 
     x: 0, 
     scale: 1,
-    transition: { duration: 0.5, ease: "easeOut" } 
+    transition: { duration: 0.5 } 
   }
 };
 

@@ -26,7 +26,7 @@ const links = {
 
 export function Footer() {
   return (
-    <footer className="bg-[#f8f8f5] border-t border-[#e0e0e0] py-16">
+    <footer className="mt-24 md:mt-32 pt-16 pb-8 border-t border-gray-200 bg-[#f8f8f5] border-t border-[#e0e0e0] py-16">
       <div className="container-g">
         <div className="grid md:grid-cols-4 gap-12">
           <div>
