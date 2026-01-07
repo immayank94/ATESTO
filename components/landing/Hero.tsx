@@ -92,6 +92,7 @@ export function Hero() {
           style={{
             mixBlendMode: 'multiply',
             opacity: 0.6,
+            background: 'transparent',
           }}
         />
         
@@ -118,6 +119,7 @@ export function Hero() {
           style={{
             mixBlendMode: 'multiply',
             opacity: 0.5,
+            background: 'transparent',
           }}
         />
       </div>
