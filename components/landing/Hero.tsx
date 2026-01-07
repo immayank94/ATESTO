@@ -90,9 +90,8 @@ export function Hero() {
           alt=""
           className="w-full h-auto"
           style={{
-            filter: 'grayscale(100%) contrast(0.9)',
             mixBlendMode: 'multiply',
-            opacity: 0.55,
+            opacity: 0.6,
           }}
         />
         
@@ -117,9 +116,8 @@ export function Hero() {
           alt=""
           className="w-full h-auto"
           style={{
-            filter: 'grayscale(100%) contrast(0.9)',
             mixBlendMode: 'multiply',
-            opacity: 0.45,
+            opacity: 0.5,
           }}
         />
       </div>
