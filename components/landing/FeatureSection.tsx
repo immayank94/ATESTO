@@ -11,7 +11,7 @@ const features = [
 
 export function FeatureSection() {
   return (
-    <section id="features" className="section-g">
+    <section className="section-spacing" id="features" className="section-g">
       <div className="container-g">
         <div className="max-w-2xl mb-16">
           <span className="section-label">[ SHIP FASTER ]</span>
@@ -24,11 +24,11 @@ export function FeatureSection() {
           </Link>
         </div>
         
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {features.map((f, i) => (
             <div key={i} className="card-g">
               <span className="section-label">[{f.tag}]</span>
-              <div className="flex items-start gap-4">
+              <div className="flex items-start gap-6 md:gap-8">
                 <div className="w-12 h-12 rounded-xl bg-[#e8f0e8] flex items-center justify-center flex-shrink-0">
                   <f.icon className="w-6 h-6 text-[#2d5a3d]" />
                 </div>

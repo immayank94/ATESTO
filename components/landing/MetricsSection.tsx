@@ -2,7 +2,7 @@
 
 export function MetricsSection() {
   return (
-    <section className="section-g bg-[#e8f0e8]">
+    <section className="section-spacing bg-section-alt section-g bg-[#e8f0e8]">
       <div className="container-g">
         <div className="text-center mb-12">
           <span className="section-label">[ DATA-DRIVEN RESULTS ]</span>

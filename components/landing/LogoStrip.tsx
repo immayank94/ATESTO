@@ -6,7 +6,7 @@ const logos = ["Siemens", "BASF", "H&M", "Adidas", "Unilever", "Nestle"];
 
 export function LogoStrip() {
   return (
-    <section className="bg-[#2d5a3d] py-4 overflow-hidden">
+    <section className="py-12 md:py-16 border-y border-gray-100">
       <div className="flex animate-marquee whitespace-nowrap">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="flex items-center gap-8 mx-8">
