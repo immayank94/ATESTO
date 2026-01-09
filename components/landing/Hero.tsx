@@ -52,7 +52,7 @@ export function Hero() {
                 Try for free <ArrowRight className="w-4 h-4" />
               </Link>
               <Link 
-                href="#demo" 
+                href="/contact" 
                 className="inline-flex items-center gap-2 border-2 border-gray-200 hover:border-gray-300 text-gray-700 px-6 py-3.5 rounded-lg text-base font-medium transition-all hover:bg-gray-50"
               >
                 Get a demo

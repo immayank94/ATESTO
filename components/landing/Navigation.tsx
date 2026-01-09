@@ -15,10 +15,10 @@ export function Navigation() {
   }, []);
 
   const navLinks = [
-    { label: "Features", href: "#features" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Features", href: "/#features" },
+    { label: "Pricing", href: "/#pricing" },
     { label: "Docs", href: "/docs" },
-    { label: "Resources", href: "#resources" },
+    { label: "Contact", href: "/contact" },
   ];
 
   return (

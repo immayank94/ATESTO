@@ -6,9 +6,9 @@ export function Footer() {
   
   const footerLinks = {
     product: [
-      { label: "Pricing", href: "#pricing" },
+      { label: "Pricing", href: "/#pricing" },
+      { label: "Features", href: "/#features" },
       { label: "Docs", href: "/docs" },
-      { label: "API", href: "/docs/api" },
       { label: "Security", href: "/security" },
     ],
     company: [
@@ -21,12 +21,11 @@ export function Footer() {
       { label: "Privacy Policy", href: "/privacy" },
       { label: "Terms of Service", href: "/terms" },
       { label: "Cookie Policy", href: "/cookies" },
-      { label: "GDPR", href: "/privacy#gdpr" },
     ],
     resources: [
-      { label: "For EU Companies", href: "/resources/eu-compliance" },
-      { label: "What is DPP?", href: "/resources/dpp" },
       { label: "Help Center", href: "/help" },
+      { label: "EU Compliance", href: "/resources/eu-compliance" },
+      { label: "What is DPP?", href: "/resources/dpp" },
     ],
   };
 
@@ -44,7 +43,7 @@ export function Footer() {
               AI-powered compliance data extraction for modern supply chains.
             </p>
             <p className="text-xs text-gray-400 mt-4">
-              Made in Wrocław, Poland 🇵🇱
+              Made in Wroclaw, Poland
             </p>
           </div>
 
