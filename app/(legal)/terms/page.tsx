@@ -9,7 +9,7 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. Agreement</h2>
             <p className="text-gray-600">
-              By using ATESTO ("Service"), you agree to these Terms of Service ("Terms"). 
+              By using ATESTO ((&quot;Service&quot;)), you agree to these Terms of Service ((&quot;Terms&quot;)). 
               The Service is provided by ATESTO Sp. z o.o., a company registered in Wrocław, Poland.
               These Terms are governed by Polish and European Union law.
             </p>

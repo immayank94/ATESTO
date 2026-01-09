@@ -9,7 +9,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-2xl font-semibold mb-4">1. Data Controller</h2>
             <p className="text-gray-600">
-              ATESTO ("we", "us", "our") is operated by ATESTO Sp. z o.o., registered in Wrocław, Poland. 
+              ATESTO ((&quot;we&quot;, &quot;us&quot;, &quot;our&quot;)) is operated by ATESTO Sp. z o.o., registered in Wrocław, Poland. 
               We are the data controller responsible for your personal data under the EU General Data Protection 
               Regulation (GDPR) and Polish data protection laws.
             </p>
@@ -46,7 +46,7 @@ export default function PrivacyPolicy() {
             <ul className="list-disc pl-6 text-gray-600 space-y-2">
               <li><strong>Access:</strong> Request a copy of your personal data</li>
               <li><strong>Rectification:</strong> Correct inaccurate data</li>
-              <li><strong>Erasure:</strong> Request deletion of your data ("right to be forgotten")</li>
+              <li><strong>Erasure:</strong> Request deletion of your data ((&quot;right to be forgotten&quot;))</li>
               <li><strong>Restriction:</strong> Limit how we use your data</li>
               <li><strong>Portability:</strong> Receive your data in a machine-readable format</li>
               <li><strong>Object:</strong> Object to processing based on legitimate interest</li>
